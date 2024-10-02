@@ -1,0 +1,131 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "cactus-backend.fullname" . }}
+  labels:
+    {{- include "cactus-backend.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "cactus-backend.fullname" . }}
+  selector:
+    matchLabels:
+      {{- include "cactus-backend.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cactus-backend.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "cactus-backend.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default (print "v" .Chart.AppVersion) }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8090
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /_/
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /_/
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: {{ ternary .Values.persistentVolume.statefulSetNameOverride "storage-volume" (and .Values.persistentVolume.enabled (not (empty .Values.persistentVolume.statefulSetNameOverride))) }}
+              mountPath: /app/data/pb_data
+              subPath: "{{ .Values.persistentVolume.subPath }}"
+            {{- if .Values.fcmConfigName }}
+            - name: fcm-config
+              mountPath: /app/data/pb_hooks/fcm-config.json
+              subPath: fcm-config.json
+              readOnly: true
+            {{- end }}
+            {{- if .Values.amplitudeConfigName }}
+            - name: amplitude-config
+              mountPath: /app/data/pb_hooks/amplitude-config.json
+              subPath: amplitude-config.json
+              readOnly: true
+            {{- end }}
+          env:
+            {{- include "goMemLimitEnv" . | nindent 12 }}
+            {{- with .Values.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+      volumes:
+        {{- if .Values.fcmConfigName }}
+        - name: fcm-config
+          secret:
+            secretName: {{ .Chart.Name }}
+            items:
+            - key: {{ .Values.fcmConfigName }}
+              path: fcm-config.json
+        {{- end }}
+        {{- if .Values.amplitudeConfigName }}
+        - name: amplitude-config
+          secret:
+            secretName: {{ .Chart.Name }}
+            items:
+            - key: {{ .Values.amplitudeConfigName }}
+              path: amplitude-config.json
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- if .Values.persistentVolume.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ .Values.persistentVolume.statefulSetNameOverride | default "storage-volume" }}
+        {{- if .Values.persistentVolume.annotations }}
+        annotations:
+{{ toYaml .Values.persistentVolume.annotations | indent 10 }}
+        {{- end }}
+        {{- if .Values.persistentVolume.labels }}
+        labels:
+{{ toYaml .Values.persistentVolume.labels | indent 10 }}
+        {{- end }}
+      spec:
+        accessModes:
+{{ toYaml .Values.persistentVolume.accessModes | indent 10 }}
+        resources:
+          requests:
+            storage: "{{ .Values.persistentVolume.size }}"
+      {{- if .Values.persistentVolume.storageClass }}
+      {{- if (eq "-" .Values.persistentVolume.storageClass) }}
+        storageClassName: ""
+      {{- else }}
+        storageClassName: "{{ .Values.persistentVolume.storageClass }}"
+      {{- end }}
+      {{- end }}
+{{- else }}
+        - name: storage-volume
+          emptyDir:
+          {{- if .Values.emptyDir.sizeLimit }}
+            sizeLimit: {{ .Values.emptyDir.sizeLimit }}
+          {{- else }}
+            {}
+          {{- end -}}
+{{- end }}

@@ -1,0 +1,68 @@
+name: Lint and Test Charts
+
+on: pull_request
+
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        # https://github.com/kubernetes-sigs/kind/releases
+        kind_version: [v0.20.0]
+        k8s_version: [v1.28.0, v1.27.3, v1.26.6, v1.25.11, v1.24.15, v1.23.17, v1.22.17, v1.21.14]
+        include:
+          - kind_version: v0.17.0
+            k8s_version: v1.20.15
+          - kind_version: v0.17.0
+            k8s_version: v1.19.16
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.16.1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+          check-latest: true
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.6.1
+
+      - name: Run chart-testing (list-changed)
+        id: list-changed
+        run: |
+          changed="$(ct list-changed --target-branch ${{ github.event.repository.default_branch }})"
+          if [[ -n "$changed" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run chart-testing (lint)
+        run: ct lint --target-branch ${{ github.event.repository.default_branch }}
+
+      - name: Create kind cluster
+        uses: helm/kind-action@v1.10.0
+        if: steps.list-changed.outputs.changed == 'true'
+        with:
+          version: ${{ matrix.kind_version }}
+          node_image: kindest/node:${{ matrix.k8s_version }}
+          kubectl_version: ${{ matrix.k8s_version }}
+
+      - name: Run pre-install scripts
+        if: steps.list-changed.outputs.changed == 'true'
+        run: charts/*/scripts/pre-install.sh
+
+      - name: Run chart-testing (install)
+        if: steps.list-changed.outputs.changed == 'true'
+        run: |
+          # Workaround for https://github.com/helm/chart-testing/issues/655
+          repos="$(yq '.dependencies[] | select(.repository != null) | "\(.name)=\(.repository)"' charts/*/Chart.yaml)"
+          repo_args="$(echo "$repos" | sed '/^=$/d' | sort -t = -k 2 -u | awk '{printf "%s,", $0}' | sed 's/,$//')"
+          test -n "$repo_args" && chart_repos="--chart-repos $repo_args" || chart_repos=""
+          ct install --target-branch "${{ github.event.repository.default_branch }}" $chart_repos

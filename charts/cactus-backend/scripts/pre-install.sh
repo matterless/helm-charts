@@ -2,7 +2,7 @@
 
 registry="992382468184.dkr.ecr.eu-central-1.amazonaws.com"
 username="AWS"
-password="$(aws ecr get-login-password | docker login --username "$username" --password-stdin "$registry")"
+password="$(aws ecr get-login-password)"
 
 kubectl create secret \
   docker-registry \

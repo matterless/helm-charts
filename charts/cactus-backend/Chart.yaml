@@ -1,4 +1,8 @@
 apiVersion: v2
 name: cactus-backend
+description: A web server for the Cactus backend that exposes an API for the Cactus app to use.
 type: application
 version: 0.0.4
+appVersion: "0.0"
+maintainers:
+  - name: dataviruset

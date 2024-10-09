@@ -54,6 +54,17 @@ jobs:
           node_image: kindest/node:${{ matrix.k8s_version }}
           kubectl_version: ${{ matrix.k8s_version }}
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.MATTERLESS_COMMON_AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.MATTERLESS_COMMON_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.MATTERLESS_COMMON_AWS_REGION }}
+
+      - name: Log in to AWS ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
       - name: Run pre-install scripts
         if: steps.list-changed.outputs.changed == 'true'
         run: charts/*/scripts/pre-install.sh

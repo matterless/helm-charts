@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: placeholder.dkr.ecr.eu-central-1.amazonaws.com/cactus-backend
+  repository: 992382468184.dkr.ecr.eu-central-1.amazonaws.com/cactus-backend
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: stable

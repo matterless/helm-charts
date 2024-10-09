@@ -9,6 +9,8 @@ kubectl create secret \
   matterless-common-ecr-credentials \
   --docker-server="$registry" \
   --docker-username="$username" \
-  --docker-password="$password"
+  --docker-password="$password" \
+  --dry-run=client \
+  -o yaml > "$(dirname "$0")/../templates/ecr-testing-secret.yaml"
 
 yq -i '.imagePullSecrets[0].name = "matterless-common-ecr-credentials"' "$(dirname "$0")/../values.yaml"

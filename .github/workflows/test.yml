@@ -61,16 +61,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.MATTERLESS_COMMON_AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.MATTERLESS_COMMON_AWS_REGION }}
 
-      - name: Log in to AWS ECR
-        id: ecr-login
-        uses: aws-actions/amazon-ecr-login@v2
-        with:
-          mask-password: false
-
       - name: Run pre-install scripts
         if: steps.list-changed.outputs.changed == 'true'
-        env:
-          DOCKER_PASSWORD: ${{ steps.ecr-login.outputs.docker_password_992382468184_dkr_ecr_eu_central_1_amazonaws_com }}
         run: charts/*/scripts/pre-install.sh
 
       - name: Run chart-testing (install)

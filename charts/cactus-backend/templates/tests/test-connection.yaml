@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "cactus-backend.fullname" . }}:{{ .Values.service.port }}/health']
+      args: ['{{ include "cactus-backend.fullname" . }}:{{ .Values.service.port }}/_/']
   restartPolicy: Never

@@ -39,16 +39,10 @@ service:
   port: 8090
 
 ingress:
-  enabled: true
-  className: ""
+  enabled: false
+  # className: nginx
   annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/group.name: default
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/group.order: "500"
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
-    alb.ingress.kubernetes.io/healthcheck-path: /_/
+    # kubernetes.io/tls-acme: "true"
   hosts:
     - host: cactus-backend.example.com
       paths:

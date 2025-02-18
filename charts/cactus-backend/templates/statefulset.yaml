@@ -49,13 +49,13 @@ spec:
             - name: {{ ternary .Values.persistentVolume.statefulSetNameOverride "storage-volume" (and .Values.persistentVolume.enabled (not (empty .Values.persistentVolume.statefulSetNameOverride))) }}
               mountPath: /app/data/pb_data
               subPath: "{{ .Values.persistentVolume.subPath }}"
-            {{- if .Values.generalConfigName }}
+            {{- if .Values.generalConfigKey }}
             - name: general-config
               mountPath: /app/data/pb_hooks/configs/config.json
               subPath: config.json
               readOnly: true
             {{- end }}
-            {{- if .Values.clientParserConfigName }}
+            {{- if .Values.clientParserConfigKey }}
             - name: client-parser-config
               mountPath: /app/data/pb_hooks/parsers/config.json
               subPath: config.json
@@ -67,20 +67,20 @@ spec:
             {{- toYaml . | nindent 12 }}
             {{- end }}
       volumes:
-        {{- if .Values.generalConfigName }}
+        {{- if .Values.generalConfigKey }}
         - name: general-config
           secret:
             secretName: {{ .Chart.Name }}
             items:
-            - key: {{ .Values.generalConfigName }}
+            - key: {{ .Values.generalConfigKey }}
               path: config.json
         {{- end }}
-        {{- if .Values.clientParserConfigName }}
+        {{- if .Values.clientParserConfigKey }}
         - name: client-parser-config
           secret:
             secretName: {{ .Chart.Name }}
             items:
-            - key: {{ .Values.clientParserConfigName }}
+            - key: {{ .Values.clientParserConfigKey }}
               path: config.json
         {{- end }}
       {{- with .Values.nodeSelector }}

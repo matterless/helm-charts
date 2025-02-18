@@ -148,3 +148,10 @@ emptyDir:
   ## emptyDir volume size limit
   ##
   sizeLimit: ""
+
+
+# These values determine which keys inside the Kubernetes secret that contain the contents
+# of the configs/config.json and parsers/config.json files that are mounted by the chart:
+
+# generalConfigKey: cactus-backend-general-config
+# clientParserConfigKey: cactus-backend-client-parser-config

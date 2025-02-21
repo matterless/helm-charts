@@ -3,6 +3,19 @@ entries:
   cactus-backend:
   - apiVersion: v2
     appVersion: "0.0"
+    created: "2025-02-21T04:00:35.224657956Z"
+    description: A web server for the Cactus backend that exposes an API for the Cactus
+      app to use.
+    digest: c97d2177124c5515cd394b7728eafbe8f3969591771186021c16da246e8dbe74
+    maintainers:
+    - name: dataviruset
+    name: cactus-backend
+    type: application
+    urls:
+    - https://github.com/matterless/helm-charts/releases/download/cactus-backend-0.2.0/cactus-backend-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: "0.0"
     created: "2024-12-10T08:56:21.110590279Z"
     description: A web server for the Cactus backend that exposes an API for the Cactus
       app to use.
@@ -35,4 +48,4 @@ entries:
     urls:
     - https://github.com/matterless/helm-charts/releases/download/cactus-backend-0.0.3/cactus-backend-0.0.3.tgz
     version: 0.0.3
-generated: "2024-12-10T08:56:21.11062307Z"
+generated: "2025-02-21T04:00:35.224686159Z"

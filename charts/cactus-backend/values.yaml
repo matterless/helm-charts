@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 # Set to customer's name to use specific parsers. Appended to image.repository. Leave empty to use generic image.
-client: ""
+client: "auki"
 
 image:
   repository: 992382468184.dkr.ecr.eu-central-1.amazonaws.com/cactus-backend

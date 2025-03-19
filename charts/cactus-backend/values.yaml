@@ -46,6 +46,14 @@ ingress:
   # className: nginx
   annotations:
     # kubernetes.io/tls-acme: "true"
+
+    # CORS is needed for requests from Cactus Web to work,
+    # make sure to configure this for whatever ingress provider you use.
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://cactus.auki.ai"
+
+    # Increase proxy body size to allow for large data uploads.
+    nginx.ingress.kubernetes.io/proxy-body-size: "100M"
   hosts:
     - host: cactus-backend.example.com
       paths:

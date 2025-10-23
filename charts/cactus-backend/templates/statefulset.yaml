@@ -1,5 +1,11 @@
+{{- $secrets := .Values.secrets }}
+{{- $fullName := include "cactus-backend.fullname" . }}
+{{- $secretName := .Values.existingSecretName }}
+{{- if or (eq .Values.useExistingSecret false) (empty .Values.existingSecretName) }}
+{{- $secretName = $fullName }}
+{{- end }}
 apiVersion: apps/v1
-kind: StatefulSet
+kind: {{ .Values.kind }}
 metadata:
   name: {{ include "cactus-backend.fullname" . }}
   labels:
@@ -9,6 +15,7 @@ spec:
   selector:
     matchLabels:
       {{- include "cactus-backend.selectorLabels" . | nindent 6 }}
+  replicas: {{ .Values.replicaCount }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -29,60 +36,48 @@ spec:
         - name: {{ include "cactus-backend.fullname" . }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}{{ if .Values.client }}-{{ .Values.client }}{{ end }}:{{ .Values.image.tag | default (print "v" .Chart.AppVersion) }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default (print "v" .Chart.AppVersion) }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 8090
+              containerPort: 8080
+              protocol: TCP
+            - name: admin
+              containerPort: 18190
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /_/
-              port: http
+              path: /health
+              port: admin
           readinessProbe:
             httpGet:
-              path: /_/
-              port: http
+              path: /health
+              port: admin
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: {{ ternary .Values.persistentVolume.statefulSetNameOverride "storage-volume" (and .Values.persistentVolume.enabled (not (empty .Values.persistentVolume.statefulSetNameOverride))) }}
-              mountPath: /app/data/pb_data
+              mountPath: /app/data
               subPath: "{{ .Values.persistentVolume.subPath }}"
-            {{- if .Values.generalConfigKey }}
-            - name: general-config
-              mountPath: /app/data/pb_hooks/configs/config.json
-              subPath: config.json
-              readOnly: true
-            {{- end }}
-            {{- if .Values.clientParserConfigKey }}
-            - name: client-parser-config
-              mountPath: /app/data/pb_hooks/parsers/config.json
-              subPath: config.json
-              readOnly: true
-            {{- end }}
           env:
-            {{- include "goMemLimitEnv" . | nindent 12 }}
-            {{- with .Values.extraEnv }}
-            {{- toYaml . | nindent 12 }}
+          {{- range $key, $value := .Values.envVars }}
+            - name: {{ $key }}
+              value: {{ quote $value }}
+          {{- end }}
+          {{- range $secretSource, $secretConfig := $secrets }}
+            {{- if eq $secretSource "cactus-backend-secret" }}
+              {{ $secretSource = $secretName }}
             {{- end }}
-      volumes:
-        {{- if .Values.generalConfigKey }}
-        - name: general-config
-          secret:
-            secretName: {{ include "cactus-backend.name" . }}
-            items:
-            - key: {{ .Values.generalConfigKey }}
-              path: config.json
-        {{- end }}
-        {{- if .Values.clientParserConfigKey }}
-        - name: client-parser-config
-          secret:
-            secretName: {{ include "cactus-backend.name" . }}
-            items:
-            - key: {{ .Values.clientParserConfigKey }}
-              path: config.json
-        {{- end }}
+            {{- if or (eq $secretConfig.as "environment") (eq $secretConfig.as "csi") }}
+              {{- range $secretKey, $keyEnvVarConfig := $secretConfig.items }}
+            - name: {{ required "envVarName is required on secrets items when using environment or csi" $keyEnvVarConfig.envVarName | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretSource }}
+                  key: {{ $secretKey }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -95,21 +90,25 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-{{- if .Values.persistentVolume.enabled }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints: 
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:
         name: {{ .Values.persistentVolume.statefulSetNameOverride | default "storage-volume" }}
         {{- if .Values.persistentVolume.annotations }}
         annotations:
-{{ toYaml .Values.persistentVolume.annotations | indent 10 }}
+          {{ toYaml .Values.persistentVolume.annotations | nindent 8 }}
         {{- end }}
         {{- if .Values.persistentVolume.labels }}
         labels:
-{{ toYaml .Values.persistentVolume.labels | indent 10 }}
+          {{ toYaml .Values.persistentVolume.labels | nindent 8 }}
         {{- end }}
       spec:
         accessModes:
-{{ toYaml .Values.persistentVolume.accessModes | indent 10 }}
+          {{- toYaml .Values.persistentVolume.accessModes | nindent 12 }}
         resources:
           requests:
             storage: "{{ .Values.persistentVolume.size }}"
@@ -120,12 +119,13 @@ spec:
         storageClassName: "{{ .Values.persistentVolume.storageClass }}"
       {{- end }}
       {{- end }}
-{{- else }}
+      {{- else }}
+      volumes:
         - name: storage-volume
           emptyDir:
           {{- if .Values.emptyDir.sizeLimit }}
             sizeLimit: {{ .Values.emptyDir.sizeLimit }}
           {{- else }}
-            {}
+            sizeLimit: 8Gi
           {{- end -}}
 {{- end }}

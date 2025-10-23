@@ -266,8 +266,8 @@ envVars:
   POSTGRES_PORT: 5432
   POSTGRES_SSL_MODE: disable
   POSTGRES_HOST: cactus-backend-postgresql
-  REDIS_MASTER_ADDR: redis-master:6379
-  REDIS_REPLICA_ADDR: redis-replica:6379
+  REDIS_MASTER_ADDR: redis-master-0:6379
+  REDIS_REPLICA_ADDR: redis-replicas-0:6379
   AUKI_API_URL: https://api.auki.network
   AUKI_DDS_URL: https://dds.auki.network
   AUTH_SERVER_URL: https://auth.auki.network

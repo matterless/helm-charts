@@ -168,7 +168,7 @@ persistentVolume:
 # https://github.com/bitnami/charts/tree/postgresql/16.7.27/bitnami/postgresql#parameters
 postgresql:
   # If true, the PostgreSQL dependency is enabled
-  enabled: false 
+  enabled: false
   image:
     repository: bitnamilegacy/postgresql
   auth:

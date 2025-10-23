@@ -96,16 +96,16 @@ secrets:
   cactus-backend-secret:
     as: environments
     items:
-      POSTGRES_PASSWORD:
-        key: POSTGRES_PASSWORD
-      REDIS_PASSWORD:
-        key: REDIS_PASSWORD
-      TOKEN_ENCRYPTION_KEY:
-        key: TOKEN_ENCRYPTION_KEY
-      AUTH_JWT_PROFILE:
-        key: AUTH_JWT_PROFILE
-      APP_SECRET:
-        key: APP_SECRET
+    - key: POSTGRES_PASSWORD
+      envVarName: POSTGRES_PASSWORD
+    - key: REDIS_PASSWORD
+      envVarName: REDIS_PASSWORD
+    - key: TOKEN_ENCRYPTION_KEY
+      envVarName: TOKEN_ENCRYPTION_KEY
+    - key: AUTH_JWT_PROFILE
+      envVarName: AUTH_JWT_PROFILE
+    - key: APP_SECRET
+      envVarName: APP_SECRET
 
 kind: StatefulSet
 

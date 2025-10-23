@@ -201,6 +201,7 @@ postgresql:
         cpu: 100m
         memory: 128Mi
         ephemeral-storage: 50Mi
+  fullnameOverride: cactus-backend-postgresql
 
 # https://github.com/bitnami/charts/tree/redis/22.0.7/bitnami/redis#parameters
 redis:
@@ -245,6 +246,7 @@ redis:
       - FLUSHALL
   auth:
     enabled: false
+  fullnameOverride: redis
 
 postgresqlha:
   enabled: false

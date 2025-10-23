@@ -94,7 +94,7 @@ spec:
       topologySpreadConstraints: 
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.persistentVolume.enabled }}
+  {{- if .Values.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:
         name: {{ .Values.persistentVolume.statefulSetNameOverride | default "storage-volume" }}
@@ -119,7 +119,7 @@ spec:
         storageClassName: "{{ .Values.persistentVolume.storageClass }}"
       {{- end }}
       {{- end }}
-      {{- else }}
+  {{- else }}
       volumes:
         - name: storage-volume
           emptyDir:

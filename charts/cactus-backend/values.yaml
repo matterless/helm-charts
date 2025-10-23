@@ -92,6 +92,20 @@ secretData:
   TOKEN_ENCRYPTION_KEY: cactus-backend
   AUTH_JWT_PROFILE: cactus-backend
   APP_SECRET: cactus-backend
+secrets:
+  cactus-backend-secret:
+    as: environments
+    items:
+      POSTGRES_PASSWORD:
+        key: POSTGRES_PASSWORD
+      REDIS_PASSWORD:
+        key: REDIS_PASSWORD
+      TOKEN_ENCRYPTION_KEY:
+        key: TOKEN_ENCRYPTION_KEY
+      AUTH_JWT_PROFILE:
+        key: AUTH_JWT_PROFILE
+      APP_SECRET:
+        key: APP_SECRET
 
 kind: StatefulSet
 
@@ -243,6 +257,7 @@ emptyDir:
   sizeLimit: 8Gi
 
 envVars:
+  ENV: dev
   POSTGRES_NAME: cactus-backend
   POSTGRES_USER: cactus-backend
   FAKESTORE_URL: https://fakestore-backend.prod.lookingglassprotocol.com
@@ -258,7 +273,6 @@ envVars:
   MIGRATIONS_PATH: /app/migrations
   STORAGE_BASE_PATH: /app/data/blobstorage
   CRONJOBS_TAKE_SNAPSHOT_SCHEDULE: "0 0 16 * * *"
-  SNAPSHOT_RETENTION_DAYS: 2
   REDIS_MASTER_POOL_SIZE: 50
   REDIS_MASTER_POOL_CONNECTION_TIMEOUT: 5
   REDIS_MASTER_POOL_IDLE_TIMEOUT: 3

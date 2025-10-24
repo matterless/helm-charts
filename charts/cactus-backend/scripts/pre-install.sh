@@ -29,3 +29,5 @@ data:
 EOF
 
 yq -i '.imagePullSecrets[0].name = "matterless-common-ecr-credentials"' "$(dirname "$0")/../values.yaml"
+yq -i '.existingSecretName = "cactus-backend-test"' "$(dirname "$0")/../values.yaml"
+yq -i '.useExistingSecret = true' "$(dirname "$0")/../values.yaml"

@@ -14,7 +14,6 @@ kubectl create secret \
   -o yaml > "$(dirname "$0")/../templates/ecr-testing-secret.yaml"
 
 yq -i '.imagePullSecrets[0].name = "matterless-common-ecr-credentials"' "$(dirname "$0")/../values.yaml"
-yq -i '.secretData.AUTH_JWT_PROFILE = "$AUTH_JWT_PROFILE"' "$(dirname "$0")/../values.yaml"
-echo "AUTH_JWT_PROFILE: $AUTH_JWT_PROFILE"
+yq -i '.secretData.AUTH_JWT_PROFILE = strenv(AUTH_JWT_PROFILE)' "$(dirname "$0")/../values.yaml"
 cat "$(dirname "$0")/../values.yaml"
 

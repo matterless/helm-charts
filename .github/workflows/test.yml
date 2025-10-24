@@ -63,13 +63,9 @@ jobs:
 
       - name: Run pre-install scripts
         if: steps.list-changed.outputs.changed == 'true'
+        env:
+          AUTH_JWT_PROFILE: ${{ secrets.AUTH_JWT_PROFILE }}
         run: charts/*/scripts/pre-install.sh
-
-      - name: Create test secrets
-        if: steps.list-changed.outputs.changed == 'true'
-        run: |
-          # Create a Kubernetes secret with the GitHub secret value
-          kubectl create secret generic cactus-backend-test --from-literal=AUTH_JWT_PROFILE="${{ secrets.AUTH_JWT_PROFILE }}" --from-literal=APP_SECRET=test --from-literal=TOKEN_ENCRYPTION_KEY=test --from-literal=REDIS_PASSWORD=cactus-backend --from-literal=POSTGRES_PASSWORD=cactus-backend --dry-run=client -o yaml | kubectl apply -f -
 
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'

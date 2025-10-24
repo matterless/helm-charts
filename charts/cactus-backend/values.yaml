@@ -233,6 +233,7 @@ redis:
         memory: 128Mi
     disableCommands:
       - FLUSHALL
+      - FLUSHDB
   replica:
     replicaCount: 1
     resources:
@@ -244,8 +245,10 @@ redis:
         memory: 128Mi
     disableCommands:
       - FLUSHALL
+      - FLUSHDB
   auth:
-    enabled: false
+    enabled: true
+    password: cactus-backend
   fullnameOverride: redis
 
 postgresqlha:

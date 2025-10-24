@@ -21,11 +21,11 @@ metadata:
   name: cactus-backend-test
 type: Opaque
 data:
-  AUTH_JWT_PROFILE: $(echo -n "$AUTH_JWT_PROFILE" | base64)
-  APP_SECRET: $(echo -n "test" | base64)
-  TOKEN_ENCRYPTION_KEY: $(echo -n "test" | base64)
-  REDIS_PASSWORD: $(echo -n "cactus-backend" | base64)
-  POSTGRES_PASSWORD: $(echo -n "cactus-backend" | base64)
+  AUTH_JWT_PROFILE: $(echo -n "$AUTH_JWT_PROFILE" | base64 | tr -d '\n')
+  APP_SECRET: $(echo -n "test" | base64 | tr -d '\n')
+  TOKEN_ENCRYPTION_KEY: $(echo -n "test" | base64 | tr -d '\n')
+  REDIS_PASSWORD: $(echo -n "cactus-backend" | base64 | tr -d '\n')
+  POSTGRES_PASSWORD: $(echo -n "cactus-backend" | base64 | tr -d '\n')
 EOF
 
 yq -i '.imagePullSecrets[0].name = "matterless-common-ecr-credentials"' "$(dirname "$0")/../values.yaml"

@@ -13,12 +13,19 @@ kubectl create secret \
   --dry-run=client \
   -o yaml > "$(dirname "$0")/../templates/ecr-testing-secret.yaml"
 
-kubectl create secret cactus-backend-test \
-  --from-literal=AUTH_JWT_PROFILE=$AUTH_JWT_PROFILE \
-  --from-literal=APP_SECRET=test \
-  --from-literal=TOKEN_ENCRYPTION_KEY=test \
-  --from-literal=REDIS_PASSWORD=cactus-backend \
-  --from-literal=POSTGRES_PASSWORD=cactus-backend \
-  --dry-run=client -o yaml | kubectl apply -f -
+# Create cactus-backend-test secret using cat to handle special characters
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cactus-backend-test
+type: Opaque
+data:
+  AUTH_JWT_PROFILE: $(echo -n "$AUTH_JWT_PROFILE" | base64)
+  APP_SECRET: $(echo -n "test" | base64)
+  TOKEN_ENCRYPTION_KEY: $(echo -n "test" | base64)
+  REDIS_PASSWORD: $(echo -n "cactus-backend" | base64)
+  POSTGRES_PASSWORD: $(echo -n "cactus-backend" | base64)
+EOF
 
 yq -i '.imagePullSecrets[0].name = "matterless-common-ecr-credentials"' "$(dirname "$0")/../values.yaml"

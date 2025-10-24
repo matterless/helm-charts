@@ -65,22 +65,24 @@ jobs:
         if: steps.list-changed.outputs.changed == 'true'
         run: charts/*/scripts/pre-install.sh
 
+      - name: Create test secrets
+        if: steps.list-changed.outputs.changed == 'true'
+        run: |
+          # Create a Kubernetes secret with the GitHub secret value
+          kubectl create secret generic cactus-backend-test \
+            --from-literal=AUTH_JWT_PROFILE="${{ secrets.AUTH_JWT_PROFILE }}" \
+            --from-literal=APP_SECRET=test \
+            --from-literal=TOKEN_ENCRYPTION_KEY=test \
+            --from-literal=REDIS_PASSWORD=cactus-backend \
+            --from-literal=POSTGRES_PASSWORD=cactus-backend \
+            --dry-run=client -o yaml | kubectl apply -f -
+
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'
-        env:
-          AUTH_JWT_PROFILE: ${{ secrets.AUTH_JWT_PROFILE }}
         run: |
-          # Create temporary values file with secret
-          cat > /tmp/test-secrets.yaml << EOF
-          secretData:
-            AUTH_JWT_PROFILE: "$AUTH_JWT_PROFILE"
-          EOF
-          
           # Workaround for https://github.com/helm/chart-testing/issues/655
           repos="$(yq '.dependencies[] | select(.repository != null) | "\(.name)=\(.repository)"' charts/*/Chart.yaml)"
           repo_args="$(echo "$repos" | sed '/^=$/d' | sort -t = -k 2 -u | awk '{printf "%s,", $0}' | sed 's/,$//')"
           test -n "$repo_args" && chart_repos="--chart-repos $repo_args" || chart_repos=""
-          ct install --target-branch "${{ github.event.repository.default_branch }}" $chart_repos --values /tmp/test-secrets.yaml
-          
-          # Clean up temporary file
-          rm -f /tmp/test-secrets.yaml
+          ct install --target-branch "${{ github.event.repository.default_branch }}" $chart_repos \
+            --helm-extra-args "--timeout 10m --values charts/cactus-backend/values.test.yaml"

@@ -89,7 +89,7 @@ existingSecretName: ""
 secretData:
   POSTGRES_PASSWORD: cactus-backend
   REDIS_PASSWORD: cactus-backend
-  TOKEN_ENCRYPTION_KEY: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef # replace with a random 32 character string
+  TOKEN_ENCRYPTION_KEY: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
   AUTH_JWT_PROFILE: cactus-backend
   APP_SECRET: cactus-backend
 secrets:

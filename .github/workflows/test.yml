@@ -65,6 +65,8 @@ jobs:
         if: steps.list-changed.outputs.changed == 'true'
         env:
           AUTH_JWT_PROFILE: ${{ secrets.AUTH_JWT_PROFILE }}
+          APP_SECRET: ${{ secrets.APP_SECRET }}
+          APP_KEY: ${{ secrets.APP_KEY }}
         run: charts/*/scripts/pre-install.sh
 
       - name: Run chart-testing (install)

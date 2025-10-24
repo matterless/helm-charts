@@ -15,5 +15,6 @@ kubectl create secret \
 
 yq -i '.imagePullSecrets[0].name = "matterless-common-ecr-credentials"' "$(dirname "$0")/../values.yaml"
 yq -i '.secretData.AUTH_JWT_PROFILE = strenv(AUTH_JWT_PROFILE)' "$(dirname "$0")/../values.yaml"
-cat "$(dirname "$0")/../values.yaml"
+yq -i '.secretData.APP_SECRET = strenv(APP_SECRET)' "$(dirname "$0")/../values.yaml"
+yq -i '.envVars.APP_KEY = strenv(APP_KEY)' "$(dirname "$0")/../values.yaml"
 

@@ -262,6 +262,8 @@ emptyDir:
   sizeLimit: 8Gi
 
 envVars:
+  GATEWAY_PORT: 8080
+  GATEWAY_ADMIN_PORT: 18190
   ENV: dev
   POSTGRES_NAME: cactus-backend
   POSTGRES_USER: cactus-backend

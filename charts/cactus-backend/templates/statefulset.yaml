@@ -51,21 +51,18 @@ spec:
               port: admin
             periodSeconds: 10
             failureThreshold: 30
-            delaySeconds: 10
           livenessProbe:
             httpGet:
               path: /health
               port: admin
             periodSeconds: 10
             failureThreshold: 30
-            delaySeconds: 10
           readinessProbe:
             httpGet:
               path: /health
               port: admin
             periodSeconds: 10
             failureThreshold: 30
-            delaySeconds: 10
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:

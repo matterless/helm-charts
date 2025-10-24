@@ -13,7 +13,7 @@ kubectl create secret \
   --dry-run=client \
   -o yaml > "$(dirname "$0")/../templates/ecr-testing-secret.yaml"
 
-kubectl create secret generic cactus-backend-test \
+kubectl create secret cactus-backend-test \
   --from-literal=AUTH_JWT_PROFILE=$AUTH_JWT_PROFILE \
   --from-literal=APP_SECRET=test \
   --from-literal=TOKEN_ENCRYPTION_KEY=test \

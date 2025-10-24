@@ -94,7 +94,7 @@ secretData:
   APP_SECRET: cactus-backend
 secrets:
   cactus-backend-secret:
-    as: environments
+    as: environment
     items:
     - key: POSTGRES_PASSWORD
       envVarName: POSTGRES_PASSWORD

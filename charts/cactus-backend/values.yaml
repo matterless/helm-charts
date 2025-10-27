@@ -259,6 +259,7 @@ juicefs-s3-gateway:
   enabled: false
 
 # Only used if persistentVolume.enabled: false
+# Only used if persistentVolume.enabled: false
 emptyDir:
   sizeLimit: 8Gi
 

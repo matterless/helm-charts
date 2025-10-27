@@ -1,7 +1,7 @@
 # Pocketbase migration
 
 If you are running a version of the Cactus Backend before 0.2.0 (Helm chart version
-below 0.5.0), it is based on Pocketbase. Startig from version 0.2.0 (Helm chart version
+below 0.5.0), it is based on Pocketbase. Starting from version 0.2.0 (Helm chart version
 0.5.0), Cactus Backend uses a separate Postgres database instead of Pocketbase's built-in
 SQLite database to enable better scalability and reliability.
 

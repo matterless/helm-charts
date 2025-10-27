@@ -90,7 +90,7 @@ secretData:
   POSTGRES_PASSWORD: cactus-backend  # This is the password for the postgres database. This should be a random string.
   REDIS_PASSWORD: cactus-backend  # This is the password for the redis database. This should be a random string, it can be empty if you don't want to set up authentication for redis.
   TOKEN_ENCRYPTION_KEY: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef  # This is the key for the firebase token encryption. This should be a random string of 32 characters.
-  AUTH_JWT_PROFILE: cactus-backend  # This is the profile for the auth server.
+  AUTH_JWT_PROFILE: cactus-backend  # '{"type":"application","keyId":"123","key":"-----BEGIN RSA PRIVATE KEY-----\nexample\n-----END RSA PRIVATE KEY-----\n","appId":"456","clientId":"789"}' # This is the JWT profile for the auth server (IdP).
   APP_SECRET: cactus-backend  # This is the secret for the app. You should get it from the AUKI console.
 secrets:
   cactus-backend-secret:
@@ -258,13 +258,14 @@ postgresqlha:
 juicefs-s3-gateway:
   enabled: false
 
+# Only used if persistentVolume.enabled: false
 emptyDir:
   sizeLimit: 8Gi
 
 envVars:
   GATEWAY_PORT: 8080
   GATEWAY_ADMIN_PORT: 18190
-  ENV: prod  # Anything than `test`
+  ENV: prod  # Anything other than 'test'
   AUKI_API_URL: https://api.auki.network  # The URL of the AUKI API
   AUKI_DDS_URL: https://dds.auki.network  # The URL of the DDS
   AUTH_SERVER_URL: https://auth.auki.network  # The URL of the Auth server
@@ -293,7 +294,7 @@ envVars:
   REDIS_REPLICA_POOL_CONNECTION_TIMEOUT: 5  # The connection timeout for the redis replica pool
   REDIS_REPLICA_POOL_IDLE_TIMEOUT: 3  # The idle timeout for the redis replica pool
 
-  BLOB_STORAGE_TYPE: local  # The type of blob storage to use, local or s3. We recommend using s3 for production for higher availability and scalability.
+  BLOB_STORAGE_TYPE: local  # The type of blob storage to use, 'local' or 's3'. 's3' is required if you run more than one replica.
   STORAGE_BASE_PATH: /app/data/blobstorage  # The base path for the blob storage, only used in local mode. This cannot be empty when blob storage type is local.
 
   S3_ENDPOINT_URL: http://juicefs-s3-gateway:9000  # The endpoint URL for the S3 gateway. This cannot be empty when blob storage type is s3.

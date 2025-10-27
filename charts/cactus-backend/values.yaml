@@ -87,11 +87,11 @@ monitoring:
 useExistingSecret: false
 existingSecretName: ""
 secretData:
-  POSTGRES_PASSWORD: cactus-backend
-  REDIS_PASSWORD: cactus-backend
-  TOKEN_ENCRYPTION_KEY: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
-  AUTH_JWT_PROFILE: cactus-backend
-  APP_SECRET: cactus-backend
+  POSTGRES_PASSWORD: cactus-backend # This is the password for the postgres database. This should be a random string.
+  REDIS_PASSWORD: cactus-backend # This is the password for the redis database. This should be a random string, it can be empty if you don't want to set up authentication for redis.
+  TOKEN_ENCRYPTION_KEY: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef # This is the key for the firebase token encryption. This should be a random string of 32 characters.
+  AUTH_JWT_PROFILE: cactus-backend # This is the profile for the auth server.
+  APP_SECRET: cactus-backend # This is the secret for the app. You should get it from the AUKI console.
 secrets:
   cactus-backend-secret:
     as: environment
@@ -107,7 +107,7 @@ secrets:
     - key: APP_SECRET
       envVarName: APP_SECRET
 
-kind: StatefulSet
+kind: StatefulSet # This is the kind of the resource to create. Use `Deployment` for production together with BLOB_STORAGE_TYPE=s3 and `StatefulSet` and BLOB_STORAGE_TYPE=local for development.
 
 persistentVolume:
   ## If true, create/use a Persistent Volume Claim
@@ -264,32 +264,43 @@ emptyDir:
 envVars:
   GATEWAY_PORT: 8080
   GATEWAY_ADMIN_PORT: 18190
-  ENV: dev
-  POSTGRES_NAME: cactus-backend
-  POSTGRES_USER: cactus-backend
-  FAKESTORE_URL: https://fakestore-backend.prod.lookingglassprotocol.com
-  POSTGRES_PORT: 5432
-  POSTGRES_SSL_MODE: disable
-  POSTGRES_HOST: cactus-backend-postgresql
-  REDIS_MASTER_ADDR: redis-master:6379
-  REDIS_REPLICA_ADDR: redis-replicas:6379
-  AUKI_API_URL: https://api.auki.network
-  AUKI_DDS_URL: https://dds.auki.network
-  AUTH_SERVER_URL: https://auth.auki.network
-  RUST_LOG: info
+  ENV: prod # Anything than `test`
+  AUKI_API_URL: https://api.auki.network # The URL of the AUKI API
+  AUKI_DDS_URL: https://dds.auki.network # The URL of the DDS
+  AUTH_SERVER_URL: https://auth.auki.network # The URL of the Auth server
+  RUST_LOG: info # The log level for the backend
   MIGRATIONS_PATH: /app/migrations
-  STORAGE_BASE_PATH: /app/data/blobstorage
-  CRONJOBS_TAKE_SNAPSHOT_SCHEDULE: "0 0 16 * * *"
-  REDIS_MASTER_POOL_SIZE: 50
-  REDIS_MASTER_POOL_CONNECTION_TIMEOUT: 5
-  REDIS_MASTER_POOL_IDLE_TIMEOUT: 3
-  REDIS_REPLICA_POOL_SIZE: 50
-  REDIS_REPLICA_POOL_CONNECTION_TIMEOUT: 5
-  REDIS_REPLICA_POOL_IDLE_TIMEOUT: 3
-  BLOB_STORAGE_TYPE: local
-  S3_ENDPOINT_URL: http://juicefs-s3-gateway:9000
-  S3_REGION: eu-central-1
-  S3_BUCKET_NAME: cactus-backend-storage
-  S3_PATH_PREFIX: 0
-  TOKEN_CACHE_TTL: 600
-  APP_KEY: cactus-backend
+  # sec   min   hour   day of month   month   day of week
+  # *     *     *      *              *       *
+  CRONJOBS_TAKE_SNAPSHOT_SCHEDULE: "0 0 16 * * *" # The schedule for the cron job to take a snapshot of semantic shelves
+  FAKESTORE_URL: https://fakestore-backend.prod.lookingglassprotocol.com # This will be used by default when no other backend is provided.
+
+  POSTGRES_POOL_SIZE: 10 # The size of the postgres pool
+  POSTGRES_POOL_IDLE_TIMEOUT: 2 # The idle timeout for the postgres pool in seconds. This is the time after which the connection will be closed if it is idle.
+  POSTGRES_POOL_CONNECTION_TIMEOUT: 3 # The connection timeout for the postgres pool in seconds. This is the time after which the connection will be closed if it is not established.
+  POSTGRES_NAME: cactus-backend # The name of the database
+  POSTGRES_USER: cactus-backend # The username for the database
+  POSTGRES_PORT: 5432 # The port for the database
+  POSTGRES_SSL_MODE: disable
+  POSTGRES_HOST: cactus-backend-postgresql # The host for the database
+
+  REDIS_MASTER_ADDR: redis-master:6379/0 # The address of the redis master and database id
+  REDIS_MASTER_POOL_SIZE: 50 # The size of the redis master pool, this should be greater than 0.
+  REDIS_MASTER_POOL_CONNECTION_TIMEOUT: 5 # The connection timeout for the redis master pool in seconds.
+  REDIS_MASTER_POOL_IDLE_TIMEOUT: 3 # The idle timeout for the redis master pool in seconds.
+  REDIS_REPLICA_ADDR: redis-replicas:6379/0 # The address of the redis replica and database id. This cannot be empty but can be the same as the master address if you don't want to use replicas.
+  REDIS_REPLICA_POOL_SIZE: 50 # The size of the redis replica pool, all read requests will be served by the replicas. This should be greater than 0.
+  REDIS_REPLICA_POOL_CONNECTION_TIMEOUT: 5 # The connection timeout for the redis replica pool
+  REDIS_REPLICA_POOL_IDLE_TIMEOUT: 3 # The idle timeout for the redis replica pool
+
+  BLOB_STORAGE_TYPE: local # The type of blob storage to use, local or s3. We recommend using s3 for production for higher availability and scalability.
+  STORAGE_BASE_PATH: /app/data/blobstorage # The base path for the blob storage, only used in local mode. This cannot be empty when blob storage type is local.
+  
+  S3_ENDPOINT_URL: http://juicefs-s3-gateway:9000 # The endpoint URL for the S3 gateway. This cannot be empty when blob storage type is s3.
+  S3_REGION: region # The region for the S3/Azure Blob Storage. This cannot be empty when blob storage type is s3.
+  S3_BUCKET_NAME: bucket-name # The name of the S3 bucket. This cannot be empty when blob storage type is s3.
+  S3_PATH_PREFIX: cactus-backend # The path prefix for the S3 bucket. This cannot be empty when blob storage type is s3.
+  
+  TOKEN_CACHE_TTL: 600 # The TTL for the token cache in seconds. This is the time after which the auth token will be REVERIFIED by the backend. Set to zero to disable caching.
+  
+  APP_KEY: cactus-backend # The key for the app. Created in the AUKI console.

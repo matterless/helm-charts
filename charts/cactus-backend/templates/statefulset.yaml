@@ -69,7 +69,7 @@ spec:
               value: {{ quote $value }}
           {{- end }}
           {{- range $secretSource, $secretConfig := $secrets }}
-            {{- if eq $secretSource "cactus-backend-secret" }}
+            {{- if eq $secretSource "cactus-backend" }}
               {{ $secretSource = $secretName }}
             {{- end }}
             {{- if or (eq $secretConfig.as "environment") (eq $secretConfig.as "csi") }}

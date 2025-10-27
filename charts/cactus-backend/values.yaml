@@ -62,13 +62,13 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources:
-  limits:
-    cpu: 1
-    memory: 128Mi
-  requests:
-    cpu: 100m
-    memory: 128Mi
+# resources:
+#   limits:
+#     cpu: 1
+#     memory: 128Mi
+#   requests:
+#     cpu: 100m
+#     memory: 128Mi
 
 replicaCount: 1
 
@@ -93,7 +93,7 @@ secretData:
   AUTH_JWT_PROFILE: '{"type":"application","keyId":"123","key":"-----BEGIN RSA PRIVATE KEY-----\nexample\n-----END RSA PRIVATE KEY-----\n","appId":"456","clientId":"789"}'  # This is the JWT profile for the auth server (IdP).
   APP_SECRET: cactus-backend  # This is the secret for the app. You should get it from the AUKI console.
 secrets:
-  cactus-backend-secret:
+  cactus-backend:
     as: environment
     items:
     - key: POSTGRES_PASSWORD
@@ -190,17 +190,17 @@ postgresql:
     password: cactus-backend
     database: cactus-backend
   primary:
+    # resources:
+    #   limits:
+    #     cpu: 1
+    #     memory: 256Mi
+    #   requests:
+    #     cpu: 100m
+    #     memory: 128Mi
+    # persistence:
+    #   size: 8Gi
     networkPolicy:
       enabled: false
-    resources:
-      limits:
-        cpu: 1
-        memory: 256Mi
-        ephemeral-storage: 2Gi
-      requests:
-        cpu: 100m
-        memory: 128Mi
-        ephemeral-storage: 50Mi
   fullnameOverride: cactus-backend-postgresql
 
 # https://github.com/bitnami/charts/tree/redis/22.0.7/bitnami/redis#parameters
@@ -224,25 +224,25 @@ redis:
       enabled: false
       namespace: monitoring
   master:
-    resources:
-      limits:
-        cpu: 1
-        memory: 128Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
+    # resources:
+    #   limits:
+    #     cpu: 1
+    #     memory: 128Mi
+    #   requests:
+    #     cpu: 100m
+    #     memory: 128Mi
     disableCommands:
       - FLUSHALL
       - FLUSHDB
   replica:
     replicaCount: 1
-    resources:
-      limits:
-        cpu: 1
-        memory: 128Mi
-      requests:
-        cpu: 100m
-        memory: 128Mi
+    # resources:
+    #   limits:
+    #     cpu: 1
+    #     memory: 128Mi
+    #   requests:
+    #     cpu: 100m
+    #     memory: 128Mi
     disableCommands:
       - FLUSHALL
       - FLUSHDB
@@ -305,3 +305,39 @@ envVars:
   TOKEN_CACHE_TTL: 600  # The TTL for the token cache in seconds. This is the time after which the auth token will be REVERIFIED by the backend. Set to zero to disable caching.
 
   APP_KEY: cactus-backend  # The key for the app. Created in the AUKI console.
+
+## Autoscaling configuration
+## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
+autoscaling:
+  vpa:
+    enabled: false
+    annotations: {}
+    ## List of resources that the vertical pod autoscaler can control. Defaults to cpu and memory
+    ##
+    controlledResources: []
+    ## Max allowed resources for the pod
+    ## cpu: 200m
+    ## memory: 100Mi
+    maxAllowed: {}
+    ## Min allowed resources for the pod
+    ## cpu: 200m
+    ## memory: 100Mi
+    minAllowed: {}
+    ## VPA update policy
+    ##
+    updatePolicy:
+      ## Autoscaling update policy Specifies whether recommended updates are applied when a Pod is started and whether recommended updates are applied during the life of a Pod
+      ## Possible values are "Off", "Initial", "Recreate", and "Auto".
+      ##
+      updateMode: Auto
+  hpa:
+    enabled: false
+    annotations: {}
+    minReplicas: ""
+    maxReplicas: ""
+    ## Target CPU utilization percentage
+    ##
+    targetCPU: ""
+    ## Target Memory utilization percentage
+    ##
+    targetMemory: ""

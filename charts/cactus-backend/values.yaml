@@ -90,7 +90,7 @@ secretData:
   POSTGRES_PASSWORD: cactus-backend  # This is the password for the postgres database. This should be a random string.
   REDIS_PASSWORD: cactus-backend  # This is the password for the redis database. This should be a random string, it can be empty if you don't want to set up authentication for redis.
   TOKEN_ENCRYPTION_KEY: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef  # This is the key for the firebase token encryption. This should be a random string of 32 characters.
-  AUTH_JWT_PROFILE: cactus-backend  # '{"type":"application","keyId":"123","key":"-----BEGIN RSA PRIVATE KEY-----\nexample\n-----END RSA PRIVATE KEY-----\n","appId":"456","clientId":"789"}' # This is the JWT profile for the auth server (IdP).
+  AUTH_JWT_PROFILE: '{"type":"application","keyId":"123","key":"-----BEGIN RSA PRIVATE KEY-----\nexample\n-----END RSA PRIVATE KEY-----\n","appId":"456","clientId":"789"}'  # This is the JWT profile for the auth server (IdP).
   APP_SECRET: cactus-backend  # This is the secret for the app. You should get it from the AUKI console.
 secrets:
   cactus-backend-secret:

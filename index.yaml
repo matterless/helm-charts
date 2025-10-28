@@ -2,6 +2,35 @@ apiVersion: v1
 entries:
   cactus-backend:
   - apiVersion: v2
+    appVersion: "0.2"
+    created: "2025-10-28T01:00:50.886597455Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.7.27
+    - condition: postgresqlha.enabled
+      name: postgresql-ha
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.3.2
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 22.0.7
+    - condition: juicefs-s3-gateway.enabled
+      name: juicefs-s3-gateway
+      repository: https://juicedata.github.io/charts/
+      version: 0.11.3
+    description: A backend that exposes an API for the Cactus app to use.
+    digest: ecb845b9759cd4b012d6813ac0d7ff68443eaf85894123f10572524a34192d83
+    maintainers:
+    - name: dataviruset
+    name: cactus-backend
+    type: application
+    urls:
+    - https://github.com/matterless/helm-charts/releases/download/cactus-backend-0.5.0/cactus-backend-0.5.0.tgz
+    version: 0.5.0
+  - apiVersion: v2
     appVersion: "0.1"
     created: "2025-05-22T09:39:55.677571135Z"
     description: A web server for the Cactus backend that exposes an API for the Cactus
@@ -74,4 +103,4 @@ entries:
     urls:
     - https://github.com/matterless/helm-charts/releases/download/cactus-backend-0.0.3/cactus-backend-0.0.3.tgz
     version: 0.0.3
-generated: "2025-05-22T09:39:55.677600942Z"
+generated: "2025-10-28T01:00:50.886636007Z"

@@ -300,8 +300,7 @@ envVars:
   REDIS_REPLICA_POOL_SIZE: 50  # The size of the redis replica pool, all read requests will be served by the replicas. This should be greater than 0.
   REDIS_REPLICA_POOL_CONNECTION_TIMEOUT: 5  # The connection timeout for the redis replica pool
   REDIS_REPLICA_POOL_IDLE_TIMEOUT: 3  # The idle timeout for the redis replica pool
-  REDIS_MASTER_SSL_ENABLED: false  # Whether to use SSL for the redis master connection.
-  REDIS_REPLICA_SSL_ENABLED: false  # Whether to use SSL for the redis replica connection.
+  REDIS_SSL_ENABLED: false  # Whether to use SSL for the redis connection.
 
   BLOB_STORAGE_TYPE: local  # The type of blob storage to use, 'local' or 's3'. 's3' is required if you run more than one replica.
   STORAGE_BASE_PATH: /app/data/blobstorage  # The base path for the blob storage, only used in local mode. This cannot be empty when blob storage type is local.

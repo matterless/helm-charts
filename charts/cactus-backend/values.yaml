@@ -104,8 +104,8 @@ secrets:
       envVarName: TOKEN_ENCRYPTION_KEY
     - key: AUTH_JWT_PROFILE
       envVarName: AUTH_JWT_PROFILE
-    - key: APP_SECRET
-      envVarName: APP_SECRET
+  cactus-backend-dev:
+    as: volume
   # juicefs-secret:
   #   as: environment
   #   items:

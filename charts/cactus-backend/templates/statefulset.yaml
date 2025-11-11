@@ -4,6 +4,12 @@
 {{- if or (eq .Values.useExistingSecret false) (empty .Values.existingSecretName) }}
 {{- $secretName = $fullName }}
 {{- end }}
+{{- $hasVolumeSecret := false }}
+{{- range $secretKey, $secretConfig := $secrets }}
+  {{- if eq $secretConfig.as "volume" }}
+    {{- $hasVolumeSecret = true }}
+  {{- end }}
+{{- end }}
 apiVersion: apps/v1
 kind: {{ .Values.kind }}
 metadata:
@@ -63,6 +69,18 @@ spec:
             - name: {{ ternary .Values.persistentVolume.statefulSetNameOverride "storage-volume" (and .Values.persistentVolume.enabled (not (empty .Values.persistentVolume.statefulSetNameOverride))) }}
               mountPath: /app/data
               subPath: "{{ .Values.persistentVolume.subPath }}"
+            {{- if $hasVolumeSecret }}
+            {{- range $secretName, $secretConfig := $secrets }}
+              {{- if eq $secretConfig.as "volume" }}
+            - name: {{ $secretName }}
+              mountPath: {{ $secretConfig.mountPath }}
+                {{- if $secretConfig.subPath }}
+              subPath: {{ $secretConfig.subPath }}
+                {{- end }}
+              readOnly: true
+              {{- end }}
+            {{- end }}
+          {{- end }}
           env:
           {{- range $key, $value := .Values.envVars }}
             - name: {{ $key }}
@@ -125,6 +143,23 @@ spec:
       {{- end }}
   {{- else }}
       volumes:
+    {{- if $hasVolumeSecret }}
+      {{- range $name, $value := $secrets }}
+        {{- if eq $value.as "volume" }}
+        - name: {{ $name }}
+          secret:
+            secretName: {{ $name }}
+            defaultMode: 0400
+          {{- if $value.items }}
+            items:
+            {{- range $secretKey, $keyMountConfig := $value.items }}
+              - key: {{ $secretKey }}
+                path: {{ required "filePath is required for secrets items" $keyMountConfig.filePath | quote }}
+            {{- end }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
         - name: storage-volume
           emptyDir:
           {{- if .Values.emptyDir.sizeLimit }}

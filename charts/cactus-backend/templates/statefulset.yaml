@@ -4,6 +4,12 @@
 {{- if or (eq .Values.useExistingSecret false) (empty .Values.existingSecretName) }}
 {{- $secretName = $fullName }}
 {{- end }}
+{{- $hasEnvFromSecret := false }}
+{{- range $secretKey, $secretConfig := $secrets }}
+  {{- if eq $secretConfig.as "envFrom" }}
+    {{- $hasEnvFromSecret = true }}
+  {{- end }}
+{{- end }}
 apiVersion: apps/v1
 kind: {{ .Values.kind }}
 metadata:
@@ -69,9 +75,7 @@ spec:
               value: {{ quote $value }}
           {{- end }}
           {{- range $secretSource, $secretConfig := $secrets }}
-            {{- if eq $secretSource "cactus-backend" }}
-              {{ $secretSource = $secretName }}
-            {{- end }}
+            {{- if eq $secretSource "cactus-backend" }}{{ $secretSource = $secretName }}{{- end }}
             {{- if or (eq $secretConfig.as "environment") (eq $secretConfig.as "csi") }}
               {{- range $item := $secretConfig.items }}
             - name: {{ required "envVarName is required on secrets items when using environment or csi" $item.envVarName | quote }}
@@ -79,6 +83,15 @@ spec:
                 secretKeyRef:
                   name: {{ $secretSource }}
                   key: {{ $item.key }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+          {{- if $hasEnvFromSecret }}
+          envFrom:
+            {{- range $secretName, $secretConfig := $secrets }}
+              {{- if eq $secretConfig.as "envFrom" }}
+            - secretRef:
+                name: {{ $secretName }}
               {{- end }}
             {{- end }}
           {{- end }}

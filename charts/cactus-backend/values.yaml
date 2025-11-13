@@ -312,7 +312,7 @@ envVars:
 
   TOKEN_CACHE_TTL: 600  # The TTL for the token cache in seconds. This is the time after which the auth token will be REVERIFIED by the backend. Set to zero to disable caching.
 
-  APP_KEY: cactus-backend  # The key for the app. Created in the AUKI console.
+  # APP_KEY: cactus-backend  # The key for the app. Created in the AUKI console.
 
 ## Autoscaling configuration
 ## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/

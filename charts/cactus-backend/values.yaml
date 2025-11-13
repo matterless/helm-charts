@@ -91,7 +91,7 @@ secretData:
   REDIS_PASSWORD: cactus-backend  # This is the password for the redis database. This should be a random string, it can be empty if you don't want to set up authentication for redis.
   TOKEN_ENCRYPTION_KEY: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef  # This is the key for the firebase token encryption. This should be a random string of 32 characters.
   AUTH_JWT_PROFILE: '{"type":"application","keyId":"123","key":"-----BEGIN RSA PRIVATE KEY-----\nexample\n-----END RSA PRIVATE KEY-----\n","appId":"456","clientId":"789"}'  # This is the JWT profile for the auth server (IdP).
-  APP_SECRET: cactus-backend  # This is the secret for the app. You should get it from the AUKI console.
+  APP_SECRET: cactus-backend  # This is the app secret used together with the app key (defined in the envVars section below) to access Auki services. You should obtain it from the apps section of the Auki console.
 secrets:
   cactus-backend:
     as: environment
@@ -312,7 +312,7 @@ envVars:
 
   TOKEN_CACHE_TTL: 600  # The TTL for the token cache in seconds. This is the time after which the auth token will be REVERIFIED by the backend. Set to zero to disable caching.
 
-  APP_KEY: cactus-backend  # The key for the app. Created in the AUKI console.
+  # APP_KEY: cactus-backend  # This is the app key used together with the app secret (defined in the secretData above or by using existingSecret) to access Auki services. You should obtain it from the apps section of the Auki console.
 
 ## Autoscaling configuration
 ## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/

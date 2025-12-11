@@ -1,9 +1,9 @@
 apiVersion: v2
-name: cactus-backend
-description: A backend that exposes an API for the Cactus app to use.
+name: cactus-parser
+description: A parser that loads products data from a source.
 type: application
-version: 0.6.0
-appVersion: "0.2"
+version: 0.0.1
+appVersion: "0.3"
 maintainers:
   - name: dataviruset
   - name: shuning
@@ -24,6 +24,4 @@ dependencies:
   version: 0.11.3
   repository: https://juicedata.github.io/charts/
   condition: juicefs-s3-gateway.enabled
-- name: cactus-parser
-  version: 0.0.1
-  repository: file://../cactus-parser
+

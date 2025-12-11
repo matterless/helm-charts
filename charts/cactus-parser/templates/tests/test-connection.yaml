@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "cactus-parser.fullname" . }}-test-connection"
+  labels:
+    {{- include "cactus-parser.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: curl
+      image: curlimages/curl
+      command: ['curl']
+      args: ['-f', 'http://{{ include "cactus-parser.fullname" . }}:{{ .Values.service.adminPort }}/health']
+  restartPolicy: Never
+

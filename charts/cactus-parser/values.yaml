@@ -1,9 +1,9 @@
-# Default values for cactus-backend.
+# Default values for cactus-parser.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 image:
-  repository: 992382468184.dkr.ecr.eu-central-1.amazonaws.com/cactus-backend
+  repository: 992382468184.dkr.ecr.eu-central-1.amazonaws.com/cactus-parser
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -53,7 +53,7 @@ ingress:
     # Increase proxy body size to allow for large data uploads.
     nginx.ingress.kubernetes.io/proxy-body-size: "100M"
   hosts:
-    - host: cactus-backend.example.com
+    - host: cactus-parser.example.com
       paths:
         - path: /
           pathType: Prefix
@@ -87,25 +87,16 @@ monitoring:
 useExistingSecret: false
 existingSecretName: ""
 secretData:
-  POSTGRES_PASSWORD: cactus-backend  # This is the password for the postgres database. This should be a random string.
-  REDIS_PASSWORD: cactus-backend  # This is the password for the redis database. This should be a random string, it can be empty if you don't want to set up authentication for redis.
-  TOKEN_ENCRYPTION_KEY: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef  # This is the key for the firebase token encryption. This should be a random string of 32 characters.
-  AUTH_JWT_PROFILE: '{"type":"application","keyId":"123","key":"-----BEGIN RSA PRIVATE KEY-----\nexample\n-----END RSA PRIVATE KEY-----\n","appId":"456","clientId":"789"}'  # This is the JWT profile for the auth server (IdP).
-  APP_SECRET: cactus-backend  # This is the app secret used together with the app key (defined in the envVars section below) to access Auki services. You should obtain it from the apps section of the Auki console.
+  POSTGRES_PASSWORD: cactus-parser  # This is the password for the postgres database. This should be a random string.
+  REDIS_PASSWORD: cactus-parser  # This is the password for the redis database. This should be a random string, it can be empty if you don't want to set up authentication for redis.
 secrets:
-  cactus-backend:
-    as: environment
-    items:
-    - key: POSTGRES_PASSWORD
-      envVarName: POSTGRES_PASSWORD
-    - key: REDIS_PASSWORD
-      envVarName: REDIS_PASSWORD
-    - key: TOKEN_ENCRYPTION_KEY
-      envVarName: TOKEN_ENCRYPTION_KEY
-    - key: AUTH_JWT_PROFILE
-      envVarName: AUTH_JWT_PROFILE
-    - key: APP_SECRET
-      envVarName: APP_SECRET
+  # cactus-parser:
+  #   as: environment
+  #   items:
+  #   - key: POSTGRES_PASSWORD
+  #     envVarName: POSTGRES_PASSWORD
+  #   - key: REDIS_PASSWORD
+  #     envVarName: REDIS_PASSWORD
   # juicefs-secret:
   #   as: environment
   #   items:
@@ -193,9 +184,9 @@ postgresql:
   image:
     repository: bitnamilegacy/postgresql
   auth:
-    username: cactus-backend
-    password: cactus-backend
-    database: cactus-backend
+    username: cactus-parser
+    password: cactus-parser
+    database: cactus-parser
   primary:
     # resources:
     #   limits:
@@ -208,7 +199,7 @@ postgresql:
     #   size: 8Gi
     networkPolicy:
       enabled: false
-  fullnameOverride: cactus-backend-postgresql
+  fullnameOverride: cactus-parser-postgresql
 
 # https://github.com/bitnami/charts/tree/redis/22.0.7/bitnami/redis#parameters
 redis:
@@ -255,7 +246,7 @@ redis:
       - FLUSHDB
   auth:
     enabled: true
-    password: cactus-backend
+    password: cactus-parser
   fullnameOverride: redis
 
 postgresqlha:
@@ -272,34 +263,15 @@ emptyDir:
 envVars:
   PORT: 8080
   ADMIN_PORT: 18190
-  ENV: prod  # Anything other than 'test'
-  AUKI_API_URL: https://api.auki.network  # The URL of the AUKI API
-  AUKI_DDS_URL: https://dds.auki.network  # The URL of the DDS
-  AUTH_SERVER_URL: https://auth.auki.network  # The URL of the Auth server
-  RUST_LOG: info  # The log level for the backend
-  MIGRATIONS_PATH: /app/migrations
-  # sec   min   hour   day of month   month   day of week
-  # *     *     *      *              *       *
-  CRONJOBS_TAKE_SNAPSHOT_SCHEDULE: "0 0 16 * * *"  # The schedule for the cron job to take a snapshot of semantic shelves
-
+  
   POSTGRES_POOL_SIZE: 10  # The size of the postgres pool
   POSTGRES_POOL_IDLE_TIMEOUT: 2  # The idle timeout for the postgres pool in seconds. This is the time after which the connection will be closed if it is idle.
   POSTGRES_POOL_CONNECTION_TIMEOUT: 3  # The connection timeout for the postgres pool in seconds. This is the time after which the connection will be closed if it is not established.
-  POSTGRES_NAME: cactus-backend  # The name of the database
-  POSTGRES_USER: cactus-backend  # The username for the database
+  POSTGRES_NAME: cactus-parser  # The name of the database
+  POSTGRES_USER: cactus-parser  # The username for the database
   POSTGRES_PORT: 5432  # The port for the database
   POSTGRES_SSL_MODE: disable
-  POSTGRES_HOST: cactus-backend-postgresql  # The host for the database
-
-  REDIS_MASTER_ADDR: redis-master:6379/0  # The address of the redis master and database id
-  REDIS_MASTER_POOL_SIZE: 50  # The size of the redis master pool, this should be greater than 0.
-  REDIS_MASTER_POOL_CONNECTION_TIMEOUT: 5  # The connection timeout for the redis master pool in seconds.
-  REDIS_MASTER_POOL_IDLE_TIMEOUT: 3  # The idle timeout for the redis master pool in seconds.
-  REDIS_REPLICA_ADDR: redis-replicas:6379/0  # The address of the redis replica and database id. This cannot be empty but can be the same as the master address if you don't want to use replicas.
-  REDIS_REPLICA_POOL_SIZE: 50  # The size of the redis replica pool, all read requests will be served by the replicas. This should be greater than 0.
-  REDIS_REPLICA_POOL_CONNECTION_TIMEOUT: 5  # The connection timeout for the redis replica pool
-  REDIS_REPLICA_POOL_IDLE_TIMEOUT: 3  # The idle timeout for the redis replica pool
-  REDIS_SSL_ENABLED: false  # Whether to use SSL for the redis connection.
+  POSTGRES_HOST: cactus-parser-postgresql  # The host for the database
 
   BLOB_STORAGE_TYPE: local  # The type of blob storage to use, 'local' or 's3'. 's3' is required if you run more than one replica.
   STORAGE_BASE_PATH: /app/data/blobstorage  # The base path for the blob storage, only used in local mode. This cannot be empty when blob storage type is local.
@@ -307,14 +279,7 @@ envVars:
   S3_ENDPOINT_URL: http://juicefs-s3-gateway:9000  # The endpoint URL for the S3 gateway. This cannot be empty when blob storage type is s3.
   S3_REGION: region  # The region for the S3/Azure Blob Storage. This cannot be empty when blob storage type is s3.
   S3_BUCKET_NAME: bucket-name  # The name of the S3 bucket. This cannot be empty when blob storage type is s3.
-  S3_PATH_PREFIX: cactus-backend  # The path prefix for the S3 bucket. This cannot be empty when blob storage type is s3.
-
-  TOKEN_CACHE_TTL: 600  # The TTL for the token cache in seconds. This is the time after which the auth token will be REVERIFIED by the backend. Set to zero to disable caching.
-
-  # APP_KEY: cactus-backend  # This is the app key used together with the app secret (defined in the secretData above or by using existingSecret) to access Auki services. You should obtain it from the apps section of the Auki console.
-  
-  PRODUCTS_URL: http://cactus-parser:8080
-  SALES_URL: http://cactus-parser:8080
+  S3_PATH_PREFIX: cactus-parser  # The path prefix for the S3 bucket. This cannot be empty when blob storage type is s3.
 
 ## Autoscaling configuration
 ## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
@@ -351,3 +316,4 @@ autoscaling:
     ## Target Memory utilization percentage
     ##
     targetMemory: ""
+

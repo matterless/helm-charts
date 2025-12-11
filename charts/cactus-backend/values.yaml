@@ -323,7 +323,7 @@ envVars:
   TOKEN_CACHE_TTL: 600  # The TTL for the token cache in seconds. This is the time after which the auth token will be REVERIFIED by the backend. Set to zero to disable caching.
 
   # APP_KEY: cactus-backend  # This is the app key used together with the app secret (defined in the secretData above or by using existingSecret) to access Auki services. You should obtain it from the apps section of the Auki console.
-  
+
   PRODUCTS_URL: http://cactus-parser:8080
   SALES_URL: http://cactus-parser:8080
 

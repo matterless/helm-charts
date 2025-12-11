@@ -263,7 +263,7 @@ emptyDir:
 envVars:
   PORT: 8080
   ADMIN_PORT: 18190
-  
+
   POSTGRES_POOL_SIZE: 10  # The size of the postgres pool
   POSTGRES_POOL_IDLE_TIMEOUT: 2  # The idle timeout for the postgres pool in seconds. This is the time after which the connection will be closed if it is idle.
   POSTGRES_POOL_CONNECTION_TIMEOUT: 3  # The connection timeout for the postgres pool in seconds. This is the time after which the connection will be closed if it is not established.
@@ -316,4 +316,3 @@ autoscaling:
     ## Target Memory utilization percentage
     ##
     targetMemory: ""
-

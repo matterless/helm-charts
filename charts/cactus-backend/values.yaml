@@ -270,8 +270,8 @@ emptyDir:
   sizeLimit: 8Gi
 
 envVars:
-  GATEWAY_PORT: 8080
-  GATEWAY_ADMIN_PORT: 18190
+  PORT: 8080
+  ADMIN_PORT: 18190
   ENV: prod  # Anything other than 'test'
   AUKI_API_URL: https://api.auki.network  # The URL of the AUKI API
   AUKI_DDS_URL: https://dds.auki.network  # The URL of the DDS
@@ -349,3 +349,6 @@ autoscaling:
     ## Target Memory utilization percentage
     ##
     targetMemory: ""
+
+cactus-parser:
+  enabled: false

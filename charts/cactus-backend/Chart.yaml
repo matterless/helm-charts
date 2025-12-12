@@ -2,10 +2,11 @@ apiVersion: v2
 name: cactus-backend
 description: A backend that exposes an API for the Cactus app to use.
 type: application
-version: 0.5.4
+version: 0.5.5
 appVersion: "0.2"
 maintainers:
   - name: dataviruset
+  - name: shuning
 dependencies:
 - name: postgresql
   version: 16.7.27
@@ -23,3 +24,7 @@ dependencies:
   version: 0.11.3
   repository: https://juicedata.github.io/charts/
   condition: juicefs-s3-gateway.enabled
+- name: cactus-parser
+  version: 0.0.1
+  repository: https://charts.lookingglassprotocol.com
+  condition: cactus-parser.enabled

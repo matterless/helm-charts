@@ -60,6 +60,16 @@ Before upgrading from chart version please review the following steps:
 4. **Backup:** If your deployment uses persistent data, ensure you have backups.
 5. **Test:** Consider upgrading in a staging environment before production.
 
+### Upgrading to 0.6.0
+
+#### Fixes
+
+* Renamed `GATEWAY_PORT` and `GATEWAY_ADMIN_PORT` to `PORT` and `ADMIN_PORT`. cactus backend doesn't load `GATEWAY_PORT` or `GATEWAY_ADMIN_PORT`
+
+#### Features
+
+* Introduced deployment of the product data parser as a sidecar container, enabling flexible integration and seamless replacement of parsers to accommodate various external data sources.
+
 ### Upgrading to 0.5.0
 
 Version 0.5.0 introduces significant changes to the feature set of the Cactus Backend:

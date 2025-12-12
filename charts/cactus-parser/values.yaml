@@ -3,10 +3,10 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: 992382468184.dkr.ecr.eu-central-1.amazonaws.com/cactus-parser
-  pullPolicy: IfNotPresent
+  repository: 992382468184.dkr.ecr.eu-central-1.amazonaws.com/pidb
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "feature-integration-api-cleanup"
 
 imagePullSecrets: []
 nameOverride: ""

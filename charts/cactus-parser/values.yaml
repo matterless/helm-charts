@@ -271,6 +271,7 @@ envVars:
   POSTGRES_USER: cactus-parser  # The username for the database
   POSTGRES_PORT: 5432  # The port for the database
   POSTGRES_SSL_MODE: disable
+  POSTGRES_HOST: cactus-parser-postgresql  # The host for the database
 
   BLOB_STORAGE_TYPE: local  # The type of blob storage to use, 'local' or 's3'. 's3' is required if you run more than one replica.
   STORAGE_BASE_PATH: /app/data/blobstorage  # The base path for the blob storage, only used in local mode. This cannot be empty when blob storage type is local.

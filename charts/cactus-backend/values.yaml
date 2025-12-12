@@ -300,7 +300,6 @@ envVars:
   POSTGRES_USER: cactus-backend  # The username for the database
   POSTGRES_PORT: 5432  # The port for the database
   POSTGRES_SSL_MODE: disable
-  POSTGRES_HOST: cactus-backend-postgresql  # The host for the database
 
   REDIS_MASTER_ADDR: redis-master:6379/0  # The address of the redis master and database id
   REDIS_MASTER_POOL_SIZE: 50  # The size of the redis master pool, this should be greater than 0.

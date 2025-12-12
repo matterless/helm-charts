@@ -18,3 +18,4 @@ yq -i '.image.repository = "992382468184.dkr.ecr.eu-central-1.amazonaws.com/cact
 yq -i '.image.tag = "feature-integration-api-cleanup"' "$(dirname "$0")/../values.yaml"
 yq -i '.envVars.REDIS_MASTER_ADDR = "redis-master:6379/0"' "$(dirname "$0")/../values.yaml"
 yq -i '.envVars.REDIS_REPLICA_ADDR = "redis-replicas:6379/0"' "$(dirname "$0")/../values.yaml"
+yq -i '.secret.cactus-parser.as.envFrom' "$(dirname "$0")/../values.yaml"

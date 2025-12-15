@@ -3,6 +3,7 @@ name: Release Charts
 on:
   push:
     branches:
+      - feature/sidecar
       - main
 
 jobs:

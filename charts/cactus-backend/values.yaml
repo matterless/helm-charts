@@ -349,3 +349,6 @@ autoscaling:
     ## Target Memory utilization percentage
     ##
     targetMemory: ""
+
+cactus-parser:
+  enabled: false

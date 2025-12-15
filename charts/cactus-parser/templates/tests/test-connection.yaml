@@ -13,4 +13,3 @@ spec:
       command: ['curl']
       args: ['-f', 'http://{{ include "cactus-parser.fullname" . }}:{{ .Values.service.adminPort }}/health']
   restartPolicy: Never
-

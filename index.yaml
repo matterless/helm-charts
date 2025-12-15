@@ -3,6 +3,36 @@ entries:
   cactus-backend:
   - apiVersion: v2
     appVersion: "0.2"
+    created: "2025-12-15T02:42:23.369590579Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.7.27
+    - condition: postgresqlha.enabled
+      name: postgresql-ha
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.3.2
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 22.0.7
+    - condition: juicefs-s3-gateway.enabled
+      name: juicefs-s3-gateway
+      repository: https://juicedata.github.io/charts/
+      version: 0.11.3
+    description: A backend that exposes an API for the Cactus app to use.
+    digest: 2b7e315d738529d994743fd632d1d62fd85d72f3b90926a1a2147e3a2f6be9bd
+    maintainers:
+    - name: dataviruset
+    - name: shuning
+    name: cactus-backend
+    type: application
+    urls:
+    - https://github.com/matterless/helm-charts/releases/download/cactus-backend-0.5.5/cactus-backend-0.5.5.tgz
+    version: 0.5.5
+  - apiVersion: v2
+    appVersion: "0.2"
     created: "2025-11-13T09:16:36.208237121Z"
     dependencies:
     - condition: postgresql.enabled
@@ -219,4 +249,35 @@ entries:
     urls:
     - https://github.com/matterless/helm-charts/releases/download/cactus-backend-0.0.3/cactus-backend-0.0.3.tgz
     version: 0.0.3
-generated: "2025-11-13T09:16:36.20827386Z"
+  cactus-parser:
+  - apiVersion: v2
+    appVersion: "0.3"
+    created: "2025-12-15T02:42:23.602734822Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.7.27
+    - condition: postgresqlha.enabled
+      name: postgresql-ha
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.3.2
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 22.0.7
+    - condition: juicefs-s3-gateway.enabled
+      name: juicefs-s3-gateway
+      repository: https://juicedata.github.io/charts/
+      version: 0.11.3
+    description: A parser that loads products data from a source.
+    digest: 5894f0689ab53f1c8ac7370421f7a9145de3c3229171720d4bc05da00d9271e1
+    maintainers:
+    - name: dataviruset
+    - name: shuning
+    name: cactus-parser
+    type: application
+    urls:
+    - https://github.com/matterless/helm-charts/releases/download/cactus-parser-0.0.1/cactus-parser-0.0.1.tgz
+    version: 0.0.1
+generated: "2025-12-15T02:42:23.602788703Z"

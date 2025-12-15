@@ -88,15 +88,13 @@ useExistingSecret: false
 existingSecretName: ""
 secretData:
   POSTGRES_PASSWORD: cactus-parser  # This is the password for the postgres database. This should be a random string.
-  REDIS_PASSWORD: cactus-parser  # This is the password for the redis database. This should be a random string, it can be empty if you don't want to set up authentication for redis.
+  REDIS_PASSWORD: cactus-parser  # This is the password for the redis database. This should be a random string.
 secrets:
   # cactus-parser:
   #   as: environment
   #   items:
   #   - key: POSTGRES_PASSWORD
   #     envVarName: POSTGRES_PASSWORD
-  #   - key: REDIS_PASSWORD
-  #     envVarName: REDIS_PASSWORD
   # juicefs-secret:
   #   as: environment
   #   items:
@@ -204,7 +202,7 @@ postgresql:
 # https://github.com/bitnami/charts/tree/redis/22.0.7/bitnami/redis#parameters
 redis:
   # If true, the Redis dependency is enabled
-  enabled: true
+  enabled: false
   image:
     repository: bitnamilegacy/redis
   metrics:

@@ -1,6 +1,6 @@
 apiVersion: v2
 name: cactus-parser
-description: A parser that loads products data from a source.
+description: Used to deploy parsers that load product data from a source when requested from cactus-backend
 type: application
 version: 0.0.1
 appVersion: "0.0.1"

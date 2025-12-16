@@ -78,24 +78,23 @@ spec:
               value: {{ quote $value }}
           {{- end }}
           {{- range $secretSource, $secretConfig := $secrets }}
-            {{- if eq $secretSource "cactus" }}{{ $secretSource = $secretName }}{{- end }}
             {{- if or (eq $secretConfig.as "environment") (eq $secretConfig.as "csi") }}
-              {{- range $item := $secretConfig.items }}
+            {{- range $item := $secretConfig.items }}
             - name: {{ required "envVarName is required on secrets items when using environment or csi" $item.envVarName | quote }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ $secretSource }}
+                  name: {{ if eq $secretSource "cactus" }}{{ $secretName }}{{ else }}{{ $secretSource }}{{ end }}
                   key: {{ $item.key }}
-              {{- end }}
+            {{- end }}
             {{- end }}
           {{- end }}
           {{- if $hasEnvFromSecret }}
           envFrom:
-            {{- range $secretName, $secretConfig := $secrets }}
-              {{- if eq $secretConfig.as "envFrom" }}
+            {{- range $secretSource, $secretConfig := $secrets }}
+            {{- if eq $secretConfig.as "envFrom" }}
             - secretRef:
-                name: {{ $secretName }}
-              {{- end }}
+                name: {{ if eq $secretSource "cactus" }}{{ $secretName }}{{ else }}{{ $secretSource }}{{ end }}
+            {{- end }}
             {{- end }}
           {{- end }}
       {{- with .Values.volumes }}

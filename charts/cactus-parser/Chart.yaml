@@ -3,10 +3,10 @@ name: cactus-parser
 description: A parser that loads products data from a source.
 type: application
 version: 0.0.1
-appVersion: "0.3"
+appVersion: "0.0.1"
 maintainers:
   - name: dataviruset
-  - name: shuning
+  - name: shuninghuang
 dependencies:
 - name: postgresql
   version: 16.7.27

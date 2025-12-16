@@ -6,7 +6,7 @@ version: 0.5.7
 appVersion: "0.2"
 maintainers:
   - name: dataviruset
-  - name: shuning
+  - name: shuninghuang
 dependencies:
 - name: postgresql
   version: 16.7.27

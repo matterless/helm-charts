@@ -76,7 +76,7 @@ httpRoute:
     # namespace: default
   # Hostnames matching HTTP header.
   hostnames:
-  - cactus-backend.example.com
+  # - cactus.example.com
   # List of rules and filters applied.
   rules:
   - matches:
@@ -157,9 +157,9 @@ envVars:
 useExistingSecret: false
 existingSecretName: ""
 secretData:
-  EXPO_PUBLIC_AMPLITUDE_DEV_API_KEY: ""   # Obtain from Auki
-  EXPO_PUBLIC_AMPLITUDE_PROD_API_KEY: "" # Obtain from Auki
-  EXPO_PUBLIC_JOYSTICK_API_KEY: "" # Obtain from Auki
+  EXPO_PUBLIC_AMPLITUDE_DEV_API_KEY: ""  # Obtain from Auki
+  EXPO_PUBLIC_AMPLITUDE_PROD_API_KEY: ""  # Obtain from Auki
+  EXPO_PUBLIC_JOYSTICK_API_KEY: ""  # Obtain from Auki
 
   # This is the app secret used together with the app key (defined in the envVars section above)
   # to access Auki services. You should obtain it from the apps section of the Auki console.

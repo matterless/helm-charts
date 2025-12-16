@@ -169,6 +169,22 @@ secretData:
   # This is the app secret used together with the app key (defined in the envVars section above)
   # to access Auki services. You should obtain it from the apps section of the Auki console.
   EXPO_PUBLIC_AUKI_APP_SECRET: ""
+
+# Secrets configuration section.
+# This section allows you to define Kubernetes secrets to be used by the application.
+# Each key under 'secrets' represents a secret resource, and its value is a map of options.
+#
+# The 'as' field determines how the secret is exposed to the application. Possible values:
+#   - 'envFrom': Mounts the entire secret as environment variables using envFrom.
+#   - 'environment': Mounts individual secret keys as environment variables.
+#   - 'csi': Mounts the secret as a CSI volume.
+#
+# Example:
+# secrets:
+#   mySecret:
+#     as: envFrom
+#   anotherSecret:
+#     as: csi
 secrets:
   cactus:
     as: envFrom

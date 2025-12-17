@@ -17,7 +17,12 @@ metadata:
   labels:
     {{- include "cactus-parser.labels" . | nindent 4 }}
 spec:
+{{- if eq .Values.kind "Deployment" }}
+  replicas: {{ .Values.replicaCount | default 2 }}
+{{- end }}
+{{- if eq .Values.kind "StatefulSet" }}
   serviceName: {{ include "cactus-parser.fullname" . }}
+{{- end }}
   selector:
     matchLabels:
       {{- include "cactus-parser.selectorLabels" . | nindent 6 }}

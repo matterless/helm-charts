@@ -117,7 +117,7 @@ secrets:
 kind: StatefulSet  # This is the kind of the resource to create. Use `Deployment` for production together with BLOB_STORAGE_TYPE=s3 and `StatefulSet` and BLOB_STORAGE_TYPE=local for development.
 
 persistentVolume:
-  ## If true, create/use a Persistent Volume Claim
+  ## If true, create/use a Persistent Volume Claim, it only works when kind is StatefulSet
   ## If false, use emptyDir
   ##
   enabled: true
@@ -270,7 +270,6 @@ emptyDir:
   sizeLimit: 8Gi
 
 # Config files to create and mount into the container
-# When enabled, persistentVolume.enabled is ignored
 configFiles:
   enabled: false
   # Mount path for config files inside the container

@@ -1,0 +1,13 @@
+{{- if .Values.configFiles.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cactus-backend.fullname" . }}-config
+  labels:
+    {{- include "cactus-backend.labels" . | nindent 4 }}
+data:
+  {{- range $filename, $content := .Values.configFiles.files }}
+  {{ $filename }}: |
+    {{- $content | nindent 4 }}
+  {{- end }}
+{{- end }}

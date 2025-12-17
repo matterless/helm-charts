@@ -69,6 +69,10 @@ spec:
             - name: {{ ternary .Values.persistentVolume.statefulSetNameOverride "storage-volume" (and .Values.persistentVolume.enabled (not (empty .Values.persistentVolume.statefulSetNameOverride))) }}
               mountPath: /app/data
               subPath: "{{ .Values.persistentVolume.subPath }}"
+          {{- if .Values.configFiles.enabled }}
+            - name: config-files
+              mountPath: {{ .Values.configFiles.filePath }}
+          {{- end }}
           env:
           {{- range $key, $value := .Values.envVars }}
             - name: {{ $key }}
@@ -111,7 +115,24 @@ spec:
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-  {{- if .Values.persistentVolume.enabled }}
+  {{- if or (not (and (eq .Values.kind "StatefulSet") .Values.persistentVolume.enabled)) .Values.configFiles.enabled }}
+      volumes:
+      {{- if not (and (eq .Values.kind "StatefulSet") .Values.persistentVolume.enabled) }}
+        - name: storage-volume
+          emptyDir:
+          {{- if .Values.emptyDir.sizeLimit }}
+            sizeLimit: {{ .Values.emptyDir.sizeLimit }}
+          {{- else }}
+            sizeLimit: 8Gi
+          {{- end }}
+      {{- end }}
+      {{- if .Values.configFiles.enabled }}
+        - name: config-files
+          configMap:
+            name: {{ include "cactus-backend.fullname" . }}-config
+      {{- end }}
+  {{- end }}
+  {{- if and (eq .Values.kind "StatefulSet") .Values.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:
         name: {{ .Values.persistentVolume.statefulSetNameOverride | default "storage-volume" }}
@@ -136,13 +157,4 @@ spec:
         storageClassName: "{{ .Values.persistentVolume.storageClass }}"
       {{- end }}
       {{- end }}
-  {{- else }}
-      volumes:
-        - name: storage-volume
-          emptyDir:
-          {{- if .Values.emptyDir.sizeLimit }}
-            sizeLimit: {{ .Values.emptyDir.sizeLimit }}
-          {{- else }}
-            sizeLimit: 8Gi
-          {{- end -}}
-{{- end }}
+  {{- end }}

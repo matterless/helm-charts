@@ -269,9 +269,21 @@ juicefs-s3-gateway:
 emptyDir:
   sizeLimit: 8Gi
 
+# Config files to create and mount into the container
+# When enabled, persistentVolume.enabled is ignored
+configFiles:
+  enabled: false
+  # Mount path for config files inside the container
+  filePath: /app/config
+  files:
+    domain_external_mappings.json: |
+      {
+        "domain_id": "store_id",
+      }
+
 envVars:
-  GATEWAY_PORT: 8080
-  GATEWAY_ADMIN_PORT: 18190
+  PORT: 8080
+  ADMIN_PORT: 18190
   ENV: prod  # Anything other than 'test'
   AUKI_API_URL: https://api.auki.network  # The URL of the AUKI API
   AUKI_DDS_URL: https://dds.auki.network  # The URL of the DDS
@@ -281,7 +293,6 @@ envVars:
   # sec   min   hour   day of month   month   day of week
   # *     *     *      *              *       *
   CRONJOBS_TAKE_SNAPSHOT_SCHEDULE: "0 0 16 * * *"  # The schedule for the cron job to take a snapshot of semantic shelves
-  FAKESTORE_URL: https://fakestore-backend.prod.lookingglassprotocol.com  # This will be used by default when no other backend is provided.
 
   POSTGRES_POOL_SIZE: 10  # The size of the postgres pool
   POSTGRES_POOL_IDLE_TIMEOUT: 2  # The idle timeout for the postgres pool in seconds. This is the time after which the connection will be closed if it is idle.
@@ -313,6 +324,8 @@ envVars:
   TOKEN_CACHE_TTL: 600  # The TTL for the token cache in seconds. This is the time after which the auth token will be REVERIFIED by the backend. Set to zero to disable caching.
 
   # APP_KEY: cactus-backend  # This is the app key used together with the app secret (defined in the secretData above or by using existingSecret) to access Auki services. You should obtain it from the apps section of the Auki console.
+  # PRODUCTS_URL: http://cactus-products:8080  # The URL of the Products API.
+  # SALES_URL: http://cactus-sales:8080  # The URL of the Sales API.
 
 ## Autoscaling configuration
 ## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/

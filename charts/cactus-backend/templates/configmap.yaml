@@ -6,8 +6,5 @@ metadata:
   labels:
     {{- include "cactus-backend.labels" . | nindent 4 }}
 data:
-  {{- range $filename, $content := .Values.configFiles.files }}
-  {{ $filename }}: |
-    {{- $content | nindent 4 }}
-  {{- end }}
+  {{- toYaml .Values.configFiles.files | nindent 2 }}
 {{- end }}

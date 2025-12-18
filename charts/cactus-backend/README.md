@@ -39,8 +39,8 @@ You can specify parameters with `--set key=value` or by providing a custom YAML 
 helm install cactus-backend matterless/cactus-backend -f my-values.yaml
 ```
 
-Please go through the whole `values.yaml` and follow the instructions in the comments to configure the application to
-suit your environment and needs. Some of the credentials like the app key and app secret can be obtained from the
+Please go through the whole `values.yaml` file and follow the instructions in the comments to configure the application
+to suit your environment and needs. Some of the credentials like the app key and app secret can be obtained from the
 [console](https://console.auki.network/) and for configurations like the auth JWT profile, reach out to Auki for help.
 
 It's important to configure the blob storage type correctly so persistent data like shelf snapshots can be stored.

@@ -15,5 +15,5 @@ spec:
     - name: test-cactus-parser
       image: curlimages/curl
       command: ['curl']
-      args: ['-f', 'http://cactus-parser:{{ .Values.cactus-parser.service.adminPort }}/health']
+      args: ['-f', 'http://cactus-parser:{{ index .Values "cactus-parser" "service" "adminPort" }}/health']
   restartPolicy: Never

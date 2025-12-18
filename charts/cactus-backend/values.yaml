@@ -313,7 +313,7 @@ envVars:
   REDIS_REPLICA_POOL_IDLE_TIMEOUT: 3  # The idle timeout for the redis replica pool
   REDIS_SSL_ENABLED: false  # Whether to use SSL for the redis connection.
 
-  BLOB_STORAGE_TYPE: local  # The type of blob storage to use, 'local' or 's3'. 's3' is required if you run more than one replica.
+  BLOB_STORAGE_TYPE: local  # The type of blob storage to use, 'local' or 's3'. 'local' means to store data in a local path mounted inside the pod. 's3' is normally required if you run more than one replica unless the PVC is shared across replicas.
   STORAGE_BASE_PATH: /app/data/blobstorage  # The base path for the blob storage, only used in local mode. This cannot be empty when blob storage type is local.
 
   S3_ENDPOINT_URL: http://juicefs-s3-gateway:9000  # The endpoint URL for the S3 gateway. This cannot be empty when blob storage type is s3.

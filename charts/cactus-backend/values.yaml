@@ -114,10 +114,10 @@ secrets:
   #   - key: secret-key
   #     envVarName: S3_SECRET_ACCESS_KEY
 
-kind: StatefulSet  # This is the kind of the resource to create. Use `Deployment` for production together with BLOB_STORAGE_TYPE=s3 and `StatefulSet` and BLOB_STORAGE_TYPE=local for development.
+kind: Deployment  # This is the kind of the resource to create. Use `Deployment` for production together with BLOB_STORAGE_TYPE=s3 and `StatefulSet` and BLOB_STORAGE_TYPE=local for development.
 
 persistentVolume:
-  ## If true, create/use a Persistent Volume Claim
+  ## If true, create/use a Persistent Volume Claim, it only works when kind is StatefulSet
   ## If false, use emptyDir
   ##
   enabled: true
@@ -269,9 +269,20 @@ juicefs-s3-gateway:
 emptyDir:
   sizeLimit: 8Gi
 
+# Config files to create and mount into the container
+configFiles:
+  enabled: false
+  # Mount path for config files inside the container
+  filePath: /app/config
+  files:
+    domain_external_mappings.json: |
+      {
+        "domain_id": "store_id"
+      }
+
 envVars:
-  GATEWAY_PORT: 8080
-  GATEWAY_ADMIN_PORT: 18190
+  PORT: 8080
+  ADMIN_PORT: 18190
   ENV: prod  # Anything other than 'test'
   AUKI_API_URL: https://api.auki.network  # The URL of the AUKI API
   AUKI_DDS_URL: https://dds.auki.network  # The URL of the DDS

@@ -17,11 +17,15 @@ metadata:
   labels:
     {{- include "cactus-backend.labels" . | nindent 4 }}
 spec:
+{{- if eq .Values.kind "Deployment" }}
+  replicas: {{ .Values.replicaCount | default 2 }}
+{{- end }}
+{{- if eq .Values.kind "StatefulSet" }}
   serviceName: {{ include "cactus-backend.fullname" . }}
+{{- end }}
   selector:
     matchLabels:
       {{- include "cactus-backend.selectorLabels" . | nindent 6 }}
-  replicas: {{ .Values.replicaCount }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -69,6 +73,10 @@ spec:
             - name: {{ ternary .Values.persistentVolume.statefulSetNameOverride "storage-volume" (and .Values.persistentVolume.enabled (not (empty .Values.persistentVolume.statefulSetNameOverride))) }}
               mountPath: /app/data
               subPath: "{{ .Values.persistentVolume.subPath }}"
+          {{- if .Values.configFiles.enabled }}
+            - name: config-files
+              mountPath: {{ .Values.configFiles.filePath }}
+          {{- end }}
           env:
           {{- range $key, $value := .Values.envVars }}
             - name: {{ $key }}
@@ -111,7 +119,20 @@ spec:
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-  {{- if .Values.persistentVolume.enabled }}
+  {{- if or (not (and (eq .Values.kind "StatefulSet") .Values.persistentVolume.enabled)) .Values.configFiles.enabled }}
+      volumes:
+      {{- if not (and (eq .Values.kind "StatefulSet") .Values.persistentVolume.enabled) }}
+        - name: storage-volume
+          emptyDir:
+            sizeLimit: {{ .Values.emptyDir.sizeLimit | default "8Gi" }}
+      {{- end }}
+      {{- if .Values.configFiles.enabled }}
+        - name: config-files
+          configMap:
+            name: {{ include "cactus-backend.fullname" . }}-config-files
+      {{- end }}
+  {{- end }}
+  {{- if and (eq .Values.kind "StatefulSet") .Values.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:
         name: {{ .Values.persistentVolume.statefulSetNameOverride | default "storage-volume" }}
@@ -136,13 +157,4 @@ spec:
         storageClassName: "{{ .Values.persistentVolume.storageClass }}"
       {{- end }}
       {{- end }}
-  {{- else }}
-      volumes:
-        - name: storage-volume
-          emptyDir:
-          {{- if .Values.emptyDir.sizeLimit }}
-            sizeLimit: {{ .Values.emptyDir.sizeLimit }}
-          {{- else }}
-            sizeLimit: 8Gi
-          {{- end -}}
-{{- end }}
+  {{- end }}

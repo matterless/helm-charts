@@ -1,0 +1,8 @@
+apiVersion: v2
+name: cactus
+description: Cactus' web client that uses cactus-backend
+type: application
+version: 0.0.1
+appVersion: "0.4"
+maintainers:
+  - name: dataviruset

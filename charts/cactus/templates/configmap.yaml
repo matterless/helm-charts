@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cactus.fullname" . }}
+  labels:
+    {{- include "cactus.labels" . | nindent 4 }}
+data:
+  40-react-env-vars.sh: |
+    #!/bin/sh
+    cd /usr/share/nginx/html/_expo/static/js/web/
+
+    prefix="EXPO_PUBLIC"
+    for var in \
+      API_URL \
+      DDS_URL \
+      AUKI_APP_KEY \
+      AUKI_APP_SECRET \
+      DS_URL \
+      AMPLITUDE_PROD_API_KEY \
+      AUTH_ISSUER \
+      AUTH_CLIENT_ID_WEB \
+      JOYSTICK_API_KEY \
+      ; do
+      var_name="${prefix}_${var}"
+      eval_cmd="echo \"\$${var_name}\""
+      var_value="$(eval "${eval_cmd}")"
+      sed_script="s~__${var_name}__~${var_value}~g"
+
+      sed -i "${sed_script}" *.js
+    done
+  nginx-default.conf: |
+    server {
+        listen       8080;
+        server_name  localhost;
+
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-Frame-Options {{ quote .Values.nginxConfig.xFrameOptions }} always;
+        add_header Content-Security-Policy {{ quote .Values.nginxConfig.contentSecurityPolicy }} always;
+        add_header Referrer-Policy {{ quote .Values.nginxConfig.referrerPolicy }} always;
+
+        location / {
+            root      /usr/share/nginx/html;
+            try_files $uri $uri/ /index.html;
+        }
+
+        location ~* /assets/(.*)$ {
+            root /usr/share/nginx/html;
+        }
+
+        error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+            root /usr/share/nginx/html;
+        }
+    }

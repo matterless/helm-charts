@@ -41,6 +41,11 @@ You can specify parameters with `--set key=value` or by providing a custom YAML 
 helm install cactus matterless/cactus -f my-values.yaml
 ```
 
+Please go through the whole `values.yaml` and follow the instructions in the comments to configure the application to
+suit your environment and needs. Some of the credentials like the app key and app secret can be
+obtained from the [console](https://console.auki.network/) and for configurations like the Amplitude API key,
+Joystick API key and Zitadel client ID, reach out to Auki for help.
+
 ## Upgrading
 
 To upgrade your deployment:
@@ -61,6 +66,11 @@ Before upgrading from chart version please review the following steps:
    ```
 4. **Backup:** If your deployment uses persistent data, ensure you have backups.
 5. **Test:** Consider upgrading in a staging environment before production.
+
+### Upgrading to x.x.x
+
+We will update this section if there are any specific things to watch out for when upgrading to a certain version of
+the chart, for example if there have been breaking changes or other major architectural enhancements.
 
 ## Chart Structure
 

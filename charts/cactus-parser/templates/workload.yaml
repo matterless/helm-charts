@@ -26,7 +26,6 @@ spec:
   selector:
     matchLabels:
       {{- include "cactus-parser.selectorLabels" . | nindent 6 }}
-  replicas: {{ .Values.replicaCount }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -116,7 +115,7 @@ spec:
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-  {{- if .Values.persistentVolume.enabled }}
+  {{- if and (eq .Values.kind "StatefulSet") .Values.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:
         name: {{ .Values.persistentVolume.statefulSetNameOverride | default "storage-volume" }}

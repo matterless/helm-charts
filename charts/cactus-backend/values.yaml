@@ -292,7 +292,6 @@ envVars:
   # sec   min   hour   day of month   month   day of week
   # *     *     *      *              *       *
   CRONJOBS_TAKE_SNAPSHOT_SCHEDULE: "0 0 16 * * *"  # The schedule for the cron job to take a snapshot of semantic shelves
-  FAKESTORE_URL: https://fakestore-backend.prod.lookingglassprotocol.com  # This will be used by default when no other backend is provided.
 
   POSTGRES_POOL_SIZE: 10  # The size of the postgres pool
   POSTGRES_POOL_IDLE_TIMEOUT: 2  # The idle timeout for the postgres pool in seconds. This is the time after which the connection will be closed if it is idle.
@@ -323,6 +322,8 @@ envVars:
 
   TOKEN_CACHE_TTL: 600  # The TTL for the token cache in seconds. This is the time after which the auth token will be REVERIFIED by the backend. Set to zero to disable caching.
 
+  PRODUCTS_URL: http://cactus-parser:8080
+  SALES_URL: http://cactus-parser:8080
   # APP_KEY: cactus-backend  # This is the app key used together with the app secret (defined in the secretData above or by using existingSecret) to access Auki services. You should obtain it from the apps section of the Auki console.
 
 ## Autoscaling configuration
@@ -360,3 +361,27 @@ autoscaling:
     ## Target Memory utilization percentage
     ##
     targetMemory: ""
+
+cactus-parser:
+  enabled: false
+  kind: Deployment
+  image:
+    repository: 992382468184.dkr.ecr.eu-central-1.amazonaws.com/cactus-pidb
+    pullPolicy: Always
+    tag: feature-integration-api-cleanup
+  resources:
+    limits:
+      cpu: 1
+      memory: 64Mi
+    requests:
+      cpu: 500m
+      memory: 64Mi
+  envVars:
+    PORT: 8080
+    ADMIN_PORT: 18190
+  service:
+    adminPort: 18190
+  redis:
+    enabled: false
+  persistentVolume:
+    enabled: false

@@ -24,3 +24,7 @@ dependencies:
   version: 0.11.3
   repository: https://juicedata.github.io/charts/
   condition: juicefs-s3-gateway.enabled
+- name: cactus-parser
+  version: 0.0.1
+  repository: https://charts.lookingglassprotocol.com
+  condition: cactus-parser.enabled

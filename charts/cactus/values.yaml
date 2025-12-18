@@ -195,7 +195,7 @@ secrets:
 # The default configuration would only work with Auki-hosted Cactus Backends, Domain Servers and product images.
 nginxConfig:
   xFrameOptions: DENY
-  contentSecurityPolicy: >
+  contentSecurityPolicy: >-
     default-src 'self' blob:;
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data: localhost:* https://*.aukiverse.com https://*.lookingglassprotocol.com;

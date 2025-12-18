@@ -292,6 +292,7 @@ envVars:
   # sec   min   hour   day of month   month   day of week
   # *     *     *      *              *       *
   CRONJOBS_TAKE_SNAPSHOT_SCHEDULE: "0 0 16 * * *"  # The schedule for the cron job to take a snapshot of semantic shelves
+  FAKESTORE_URL: https://fakestore-backend.prod.lookingglassprotocol.com  # This will be used by default when no other backend is provided.
 
   POSTGRES_POOL_SIZE: 10  # The size of the postgres pool
   POSTGRES_POOL_IDLE_TIMEOUT: 2  # The idle timeout for the postgres pool in seconds. This is the time after which the connection will be closed if it is idle.
@@ -323,8 +324,6 @@ envVars:
   TOKEN_CACHE_TTL: 600  # The TTL for the token cache in seconds. This is the time after which the auth token will be REVERIFIED by the backend. Set to zero to disable caching.
 
   # APP_KEY: cactus-backend  # This is the app key used together with the app secret (defined in the secretData above or by using existingSecret) to access Auki services. You should obtain it from the apps section of the Auki console.
-  # PRODUCTS_URL: http://cactus-products:8080  # The URL of the Products API.
-  # SALES_URL: http://cactus-sales:8080  # The URL of the Sales API.
 
 ## Autoscaling configuration
 ## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/

@@ -385,3 +385,9 @@ cactus-parser:
     enabled: false
   persistentVolume:
     enabled: false
+  secrets:
+    cactus-parser:
+      as: environment
+      items:
+      - key: POSTGRES_PASSWORD
+        envVarName: POSTGRES_PASSWORD

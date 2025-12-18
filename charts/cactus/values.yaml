@@ -124,22 +124,17 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 70
 
 # Additional volumes on the output Deployment definition.
-volumes:
-  - name: nginx-cache
-    emptyDir: {}
-  - name: nginx-run
-    emptyDir: {}
-  - name: nginx-tmp
-    emptyDir: {}
+volumes: []
+  # - name: foo
+  #   secret:
+  #     secretName: mysecret
+  #     optional: false
 
 # Additional volumeMounts on the output Deployment definition.
-volumeMounts:
-  - name: nginx-cache
-    mountPath: /var/cache/nginx
-  - name: nginx-run
-    mountPath: /var/run
-  - name: nginx-tmp
-    mountPath: /tmp
+volumeMounts: []
+  # - name: foo
+  #   mountPath: "/etc/foo"
+  #   readOnly: true
 
 nodeSelector: {}
 
@@ -188,3 +183,23 @@ secretData:
 secrets:
   cactus:
     as: envFrom
+
+# Modify these security headers as needed but we only recommend you add addresses to the existing
+# Content-Security-Policy directives and do not remove any addresses as they are used for the auth platform, API,
+# domain discovery service, Amplitude analytics, Joystick configuration service etc.
+
+# Add your expected Cactus Backend https:// and wss:// addresses to the CSP connect-src directive.
+# Add your expected Cactus Backend addresses to the CSP form-action directive.
+# Add your expected Domain Server addresses to the CSP connect-src directive.
+# Add your expected product image sources to the CSP img-src directives.
+# The default configuration would only work with Auki-hosted Cactus Backends, Domain Servers and product images.
+nginxConfig:
+  xFrameOptions: DENY
+  contentSecurityPolicy: >
+    default-src 'self' blob:;
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' blob: data: localhost:* https://*.aukiverse.com https://*.lookingglassprotocol.com;
+    connect-src 'self' blob: data: localhost:* https://*.aukiverse.com https://*.lookingglassprotocol.com wss://*.lookingglassprotocol.com https://*.posemesh.org https://*.auki.network https://*.auki.ai https://api2.amplitude.com https://api.getjoystick.com;
+    form-action 'self' https://*.aukiverse.com https://*.lookingglassprotocol.com https://*.posemesh.org https://*.auki.ai;
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: data:; worker-src blob:;
+  referrerPolicy: strict-origin-when-cross-origin

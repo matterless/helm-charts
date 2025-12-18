@@ -13,16 +13,12 @@ data:
     for var in \
       API_URL \
       DDS_URL \
-      POCKETBASE_URL \
       AUKI_APP_KEY \
       AUKI_APP_SECRET \
       DS_URL \
-      CACTUS_ENABLE_PRODUCT_SCANNING \
-      CACTUS_ENABLE_DEV_ANALYTICS \
-      AMPLITUDE_DEV_API_KEY \
       AMPLITUDE_PROD_API_KEY \
-      ZITADEL_ISSUER \
-      ZITADEL_CLIENT_ID_WEB \
+      AUTH_ISSUER \
+      AUTH_CLIENT_ID_WEB \
       JOYSTICK_API_KEY \
       ; do
       var_name="${prefix}_${var}"
@@ -32,3 +28,27 @@ data:
 
       sed -i "${sed_script}" *.js
     done
+  nginx-default.conf: |
+    server {
+        listen       8080;
+        server_name  localhost;
+
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-Frame-Options {{ quote .Values.nginxConfig.xFrameOptions }} always;
+        add_header Content-Security-Policy {{ quote .Values.nginxConfig.contentSecurityPolicy }} always;
+        add_header Referrer-Policy {{ quote .Values.nginxConfig.referrerPolicy }} always;
+
+        location / {
+            root      /usr/share/nginx/html;
+            try_files $uri $uri/ /index.html;
+        }
+
+        location ~* /assets/(.*)$ {
+            root /usr/share/nginx/html;
+        }
+
+        error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+            root /usr/share/nginx/html;
+        }
+    }

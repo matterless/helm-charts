@@ -120,16 +120,12 @@ spec:
       {{- if not (and (eq .Values.kind "StatefulSet") .Values.persistentVolume.enabled) }}
         - name: storage-volume
           emptyDir:
-          {{- if .Values.emptyDir.sizeLimit }}
-            sizeLimit: {{ .Values.emptyDir.sizeLimit }}
-          {{- else }}
-            sizeLimit: 8Gi
-          {{- end }}
+            sizeLimit: {{ .Values.emptyDir.sizeLimit | default "8Gi" }}
       {{- end }}
       {{- if .Values.configFiles.enabled }}
         - name: config-files
           configMap:
-            name: {{ include "cactus-backend.fullname" . }}-config
+            name: {{ include "cactus-backend.fullname" . }}-config-files
       {{- end }}
   {{- end }}
   {{- if and (eq .Values.kind "StatefulSet") .Values.persistentVolume.enabled }}

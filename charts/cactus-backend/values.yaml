@@ -114,7 +114,7 @@ secrets:
   #   - key: secret-key
   #     envVarName: S3_SECRET_ACCESS_KEY
 
-kind: StatefulSet  # This is the kind of the resource to create. Use `Deployment` for production together with BLOB_STORAGE_TYPE=s3 and `StatefulSet` and BLOB_STORAGE_TYPE=local for development.
+kind: Deployment  # This is the kind of the resource to create. Use `Deployment` for production together with BLOB_STORAGE_TYPE=s3 and `StatefulSet` and BLOB_STORAGE_TYPE=local for development.
 
 persistentVolume:
   ## If true, create/use a Persistent Volume Claim, it only works when kind is StatefulSet
@@ -277,7 +277,7 @@ configFiles:
   files:
     domain_external_mappings.json: |
       {
-        "domain_id": "store_id",
+        "domain_id": "store_id"
       }
 
 envVars:

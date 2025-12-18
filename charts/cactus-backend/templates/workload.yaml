@@ -17,11 +17,15 @@ metadata:
   labels:
     {{- include "cactus-backend.labels" . | nindent 4 }}
 spec:
+{{- if eq .Values.kind "Deployment" }}
+  replicas: {{ .Values.replicaCount | default 2 }}
+{{- end }}
+{{- if eq .Values.kind "StatefulSet" }}
   serviceName: {{ include "cactus-backend.fullname" . }}
+{{- end }}
   selector:
     matchLabels:
       {{- include "cactus-backend.selectorLabels" . | nindent 6 }}
-  replicas: {{ .Values.replicaCount }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}

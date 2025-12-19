@@ -19,5 +19,6 @@ yq -i '.secretData.APP_SECRET = strenv(APP_SECRET)' "$(dirname "$0")/../values.y
 yq -i '.envVars.APP_KEY = strenv(APP_KEY)' "$(dirname "$0")/../values.yaml"
 yq -i '.image.tag = "feature-integration-api-cleanup"' "$(dirname "$0")/../values.yaml"
 yq -i '.image.repository = "992382468184.dkr.ecr.eu-central-1.amazonaws.com/internal-cactus-backend"' "$(dirname "$0")/../values.yaml"
+yq -i '."cactus-parser".image.tag = "feature-integration-api-cleanup"' "$(dirname "$0")/../values.yaml"
 yq -i '."cactus-parser".enabled = true' "$(dirname "$0")/../values.yaml"
 yq -i '."cactus-parser".imagePullSecrets[0].name = "matterless-common-ecr-credentials"' "$(dirname "$0")/../values.yaml"

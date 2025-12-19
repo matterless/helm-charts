@@ -12,8 +12,10 @@ spec:
       image: curlimages/curl
       command: ['curl']
       args: ['-f', 'http://{{ include "cactus-backend.fullname" . }}:{{ .Values.service.adminPort }}/health']
+  {{- if index .Values "cactus-parser" "enabled" }}
     - name: test-cactus-parser
       image: curlimages/curl
       command: ['curl']
       args: ['-f', 'http://cactus-parser:{{ index .Values "cactus-parser" "service" "adminPort" }}/health']
+  {{- end }}
   restartPolicy: Never

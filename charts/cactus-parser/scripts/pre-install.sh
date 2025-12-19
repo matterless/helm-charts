@@ -14,7 +14,7 @@ kubectl create secret \
   -o yaml > "$(dirname "$0")/../templates/ecr-testing-secret.yaml"
 
 yq -i '.imagePullSecrets[0].name = "matterless-common-ecr-credentials"' "$(dirname "$0")/../values.yaml"
-yq -i '.image.tag = "feature-integration-api-cleanup"' "$(dirname "$0")/../values.yaml"
+yq -i '.image.tag = "feature-integration-api-cleanup"' "$(dirname "$0")/../values.yaml"  # it should be removed once cactus pidb has latest tag.
 yq -i '.secrets."cactus-parser".as = "environment"' "$(dirname "$0")/../values.yaml"
 yq -i '.secrets."cactus-parser".items[0].key = "POSTGRES_PASSWORD"' "$(dirname "$0")/../values.yaml"
 yq -i '.secrets."cactus-parser".items[0].envVarName = "POSTGRES_PASSWORD"' "$(dirname "$0")/../values.yaml"

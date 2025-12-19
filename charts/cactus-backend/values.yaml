@@ -370,7 +370,7 @@ autoscaling:
 
 cactus-parser:
   enabled: false
-  fullnameOverride: cactus-parser  # The full name of the cactus-parser service. it should be removed once 0.0.2 of cactus parser chart is released.
+  fullnameOverride: cactus-backend-cactus-parser  # The full name of the cactus-parser service. it should be removed once 0.0.2 of cactus parser chart is released.
   kind: Deployment
   image:
     repository: 992382468184.dkr.ecr.eu-central-1.amazonaws.com/cactus-pidb

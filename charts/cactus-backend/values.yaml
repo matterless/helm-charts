@@ -326,8 +326,7 @@ envVars:
   SALES_URL: http://cactus-backend-cactus-parser:8080  # The URL for the sales API, it should be Release.name-cactus-parser:8080.
 
   EVENTS_ENABLED: false
-  EVENTS_URL: https://events.auki.network  # The webhook URL for the semanticevents.
-  EVENTS_AUTH_KEY: test  # The authentication key for the events webhook.
+  EVENTS_URL: https://events.auki.network  # The webhook URL for the semantic events.
   CRONJOBS_PROCESS_EVENTS_SCHEDULE: "0 */5 * * * *"  # The schedule for the cron job to process events.
   # DOMAIN_EXTERNAL_ID_MAPPINGS_FILE: /app/config/domain_external_mappings.json  # The file containing the domain external id mappings. Only set this if you enable configFiles.
 
@@ -386,16 +385,6 @@ cactus-parser:
     enabled: false
   persistentVolume:
     enabled: false
-  postgresql:
-    enabled: true
-    primary:
-      pdb:
-        create: false
-    fullnameOverride: cactus-backend-cactus-parser-postgresql
-  envVars:
-    POSTGRES_HOST: cactus-backend-cactus-parser-postgresql
-    POSTGRES_NAME: cactus-parser
-    POSTGRES_USER: cactus-parser
   secrets:
     cactus-parser:
       as: environment

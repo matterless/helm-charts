@@ -369,7 +369,7 @@ autoscaling:
     targetMemory: ""
 
 cactus-parser:
-  enabled: false
+  enabled: true
   kind: Deployment
   image:
     repository: 992382468184.dkr.ecr.eu-central-1.amazonaws.com/cactus-pidb
@@ -385,9 +385,3 @@ cactus-parser:
     enabled: false
   persistentVolume:
     enabled: false
-  secrets:
-    cactus-parser:
-      as: environment
-      items:
-      - key: POSTGRES_PASSWORD
-        envVarName: POSTGRES_PASSWORD

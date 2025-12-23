@@ -8,7 +8,7 @@ metadata:
     "helm.sh/hook": test
 spec:
   containers:
-    - name: test-cactus-backend
+    - name: curl
       image: curlimages/curl
       command: ['curl']
       args: ['-f', 'http://{{ include "cactus-backend.fullname" . }}:{{ .Values.service.adminPort }}/health']

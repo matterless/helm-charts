@@ -385,6 +385,16 @@ cactus-parser:
     enabled: false
   persistentVolume:
     enabled: false
+  postgresql:
+    enabled: true
+    primary:
+      pdb:
+        create: false
+    fullnameOverride: cactus-backend-cactus-parser-postgresql
+  envVars:
+    POSTGRES_HOST: cactus-backend-cactus-parser-postgresql
+    POSTGRES_NAME: cactus-parser
+    POSTGRES_USER: cactus-parser
   secrets:
     cactus-parser:
       as: environment

@@ -328,8 +328,9 @@ envVars:
   EVENTS_ENABLED: false
   EVENTS_URL: https://events.auki.network  # The webhook URL for the semanticevents.
   EVENTS_AUTH_KEY: test  # The authentication key for the events webhook.
-  DOMAIN_EXTERNAL_ID_MAPPINGS_FILE: /app/config/domain_external_mappings.json  # The file containing the domain external id mappings.
   CRONJOBS_PROCESS_EVENTS_SCHEDULE: "0 */5 * * * *"  # The schedule for the cron job to process events.
+
+  # DOMAIN_EXTERNAL_ID_MAPPINGS_FILE: /app/config/domain_external_mappings.json  # The file containing the domain external id mappings. Only set this if you enable configFiles.
   # APP_KEY: cactus-backend  # This is the app key used together with the app secret (defined in the secretData above or by using existingSecret) to access Auki services. You should obtain it from the apps section of the Auki console.
 
 ## Autoscaling configuration

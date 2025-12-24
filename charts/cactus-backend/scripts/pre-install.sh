@@ -23,7 +23,3 @@ yq -i '."cactus-parser".secrets."cactus-parser".items[0].envVarName = "POSTGRES_
 yq -i '."cactus-parser".secrets."cactus-parser".as = "environment"' "$(dirname "$0")/../values.yaml"
 yq -i '.image.tag = "feature-integration-api-cleanup"' "$(dirname "$0")/../values.yaml"
 yq -i '.image.repository = "992382468184.dkr.ecr.eu-central-1.amazonaws.com/internal-cactus-backend"' "$(dirname "$0")/../values.yaml"
-# yq -i '."cactus-parser".envVars.POSTGRES_HOST = "cactus-backend-cactus-parser-postgresql"' "$(dirname "$0")/../values.yaml"
-# yq -i '."cactus-parser".envVars.POSTGRES_NAME = "cactus-parser"' "$(dirname "$0")/../values.yaml"
-# yq -i '."cactus-parser".envVars.POSTGRES_USER = "cactus-parser"' "$(dirname "$0")/../values.yaml"
-# yq -i '."cactus-parser".postgresql.fullnameOverride = "cactus-backend-cactus-parser-postgresql"' "$(dirname "$0")/../values.yaml"

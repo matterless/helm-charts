@@ -322,8 +322,7 @@ envVars:
 
   TOKEN_CACHE_TTL: 600  # The TTL for the token cache in seconds. This is the time after which the auth token will be REVERIFIED by the backend. Set to zero to disable caching.
 
-  PRODUCTS_URL: http://cactus-backend-cactus-parser:8080  # The URL for the products API, it should be Release.name-cactus-parser:8080.
-  SALES_URL: http://cactus-backend-cactus-parser:8080  # The URL for the sales API, it should be Release.name-cactus-parser:8080.
+  PARSER_URL: http://cactus-backend-cactus-parser:8080  # The URL for the parser API, it should be Release.name-cactus-parser:8080.
 
   EVENTS_ENABLED: false
   EVENTS_URL: https://events.auki.network  # The webhook URL for the semantic events.
@@ -374,6 +373,7 @@ cactus-parser:
   image:
     repository: 992382468184.dkr.ecr.eu-central-1.amazonaws.com/cactus-pidb
     pullPolicy: IfNotPresent
+    tag: latest
   resources:
     limits:
       cpu: 1
@@ -385,7 +385,3 @@ cactus-parser:
     enabled: false
   persistentVolume:
     enabled: false
-  # postgresql:
-  #   primary:
-  #     pdb:
-  #       create: false

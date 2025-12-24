@@ -386,7 +386,6 @@ cactus-parser:
   persistentVolume:
     enabled: false
   postgresql:
-    fullnameOverride: cactus-backend-cactus-parser-postgresql
     primary:
       pdb:
         create: false

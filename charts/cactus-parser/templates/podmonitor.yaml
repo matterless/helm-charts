@@ -1,0 +1,22 @@
+{{- if .Values.monitoring.podMonitor.create -}}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ include "cactus-parser.fullname" . }}
+  namespace: {{ .Values.monitoring.namespace }}
+  labels:
+    {{- include "cactus-parser.labels" . | nindent 4 }}
+spec:
+  jobLabel: {{ include "cactus-parser.fullname" . }}
+  selector:
+    matchLabels:
+      {{ include "cactus-parser.selectorLabels" . | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  podMetricsEndpoints:
+    - interval: {{ .Values.monitoring.podMonitor.scrapeInterval }}
+      path: /metrics
+      port: admin
+{{- end }}
+

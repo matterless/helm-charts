@@ -385,7 +385,7 @@ cactus-parser:
     enabled: false
   persistentVolume:
     enabled: false
-  postgresql:
-    primary:
-      pdb:
-        create: false
+  # postgresql:
+  #   primary:
+  #     pdb:
+  #       create: false

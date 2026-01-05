@@ -145,10 +145,8 @@ affinity: {}
 envVars:
   EXPO_PUBLIC_DDS_URL: "https://dds.auki.network/"
   EXPO_PUBLIC_API_URL: "https://api.auki.network/"
-  EXPO_PUBLIC_CACTUS_ENABLE_PRODUCT_SCANNING: true
-  EXPO_PUBLIC_CACTUS_ENABLE_DEV_ANALYTICS: true
-  EXPO_PUBLIC_ZITADEL_ISSUER: "https://auth.auki.network"
-  EXPO_PUBLIC_ZITADEL_CLIENT_ID_WEB: ""  # Obtain from Auki
+  EXPO_PUBLIC_AUTH_ISSUER: "https://auth.auki.network"
+  EXPO_PUBLIC_AUTH_CLIENT_ID_WEB: ""  # Obtain from Auki
 
   # This is the app key used together with the app secret (defined in the secretData below or by using existingSecret)
   # to access Auki services. You should obtain it from the apps section of the Auki console.
@@ -157,7 +155,6 @@ envVars:
 useExistingSecret: false
 existingSecretName: ""
 secretData:
-  EXPO_PUBLIC_AMPLITUDE_DEV_API_KEY: ""  # Obtain from Auki
   EXPO_PUBLIC_AMPLITUDE_PROD_API_KEY: ""  # Obtain from Auki
   EXPO_PUBLIC_JOYSTICK_API_KEY: ""  # Obtain from Auki
 

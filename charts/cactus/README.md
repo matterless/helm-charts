@@ -55,7 +55,7 @@ helm upgrade cactus matterless/cactus
 ```
 
 **Important:**  
-Before upgrading from chart version please review the following steps:
+Before upgrading, please review the following steps:
 
 1. **Review the [values.yaml](./values.yaml) file** for any new, deprecated, or changed configuration options.
 2. **Custom Values:** If you use a custom values file, compare it to the new `values.yaml` and update your overrides as needed.

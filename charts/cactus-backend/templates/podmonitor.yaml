@@ -10,12 +10,22 @@ spec:
   jobLabel: {{ include "cactus-backend.fullname" . }}
   selector:
     matchLabels:
+      {{- if .Values.monitoring.podMonitor.selector }}
+      {{- toYaml .Values.monitoring.podMonitor.selector | nindent 6 }}
+      {{- else }}
       {{ include "cactus-backend.selectorLabels" . | nindent 6 }}
+      {{- end }}
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}
   podMetricsEndpoints:
     - interval: {{ .Values.monitoring.podMonitor.scrapeInterval }}
-      path: /metrics
+      path: {{ .Values.monitoring.podMonitor.path | default "/metrics" }}
+      {{- if .Values.monitoring.podMonitor.port }}
+      port: {{ .Values.monitoring.podMonitor.port }}
+      {{- else if .Values.monitoring.podMonitor.targetPort }}
+      targetPort: {{ .Values.monitoring.podMonitor.targetPort }}
+      {{- else }}
       port: admin
+      {{- end }}
 {{- end }}

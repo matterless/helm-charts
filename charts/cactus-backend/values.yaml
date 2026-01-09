@@ -83,6 +83,10 @@ monitoring:
   podMonitor:
     create: false
     scrapeInterval: 10s
+    port: prometheus
+    selector:
+      app.kubernetes.io/instance: cactus-backend
+      app.kubernetes.io/name: opentelemetry-collector
 
 useExistingSecret: false
 existingSecretName: ""
@@ -392,6 +396,12 @@ opentelemetry-collector:
     tag: 0.143.0
   command:
     name: otelcol-contrib
+  ports:
+    prometheus:
+      enabled: true
+      containerPort: 9464
+      servicePort: 9464
+      protocol: TCP
   config:
     exporters:
       prometheus:
@@ -415,11 +425,7 @@ opentelemetry-collector:
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: []
+          exporters: [spanmetrics]
         metrics:
-          receivers: [otlp]
-          exporters: []
-        logs:
-          receivers: [otlp]
-          processors: [batch]
-          exporters: []
+          receivers: [otlp, spanmetrics]
+          exporters: [prometheus]

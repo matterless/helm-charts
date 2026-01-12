@@ -14,7 +14,7 @@ metadata:
 spec:
   resourcePolicy:
     containerPolicies:
-    - containerName: {{ .Values.applicationName }}
+    - containerName: {{ include "cactus-backend.fullname" . }}
       {{- with .Values.autoscaling.vpa.controlledResources }}
       controlledResources:
         {{- toYaml . | nindent 8 }}

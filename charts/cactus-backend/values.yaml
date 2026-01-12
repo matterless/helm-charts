@@ -325,7 +325,7 @@ envVars:
   PARSER_URL: http://cactus-backend-cactus-parser:8080  # The URL for the parser API, it should be Release.name-cactus-parser:8080.
 
   EVENTS_ENABLED: false
-  EVENTS_URL: https://events.auki.network  # The webhook URL for the semantic events.
+  EVENTS_URL: ""  # The webhook URL for the semantic events.
   CRONJOBS_PROCESS_EVENTS_SCHEDULE: "0 */5 * * * *"  # The schedule for the cron job to process events.
   # DOMAIN_EXTERNAL_ID_MAPPINGS_FILE: /app/config/domain_external_mappings.json  # The file containing the domain external id mappings. Only set this if you enable configFiles.
 

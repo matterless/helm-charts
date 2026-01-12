@@ -22,7 +22,7 @@ jobs:
             k8s_version: v1.23.17
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 

@@ -39,6 +39,22 @@ You can specify parameters with `--set key=value` or by providing a custom YAML 
 helm install cactus-backend matterless/cactus-backend -f my-values.yaml
 ```
 
+Please go through the whole `values.yaml` file and follow the instructions in the comments to configure the application
+to suit your environment and needs. Some of the credentials like the app key and app secret can be obtained from the
+[console](https://console.auki.network/) and for configurations like the auth JWT profile, reach out to Auki for help.
+
+It's important to configure the blob storage type correctly so persistent data like shelf snapshots can be stored.
+In order to run more than one replica (pod), S3 storage is preferred, unless your persistent volume claim (PVC) can be
+shared across replicas.
+
+For more information on the S3 storage configuration, see
+[AWS SDK Configuration](https://docs.aws.amazon.com/sdk-for-go/v2/developer-guide/configure-gosdk.html) and
+[S3 Reference Guide](https://docs.aws.amazon.com/general/latest/gr/s3.html).
+
+For more information on how to use JuiceFS to act as a caching layer and also bridge to Azure Blob Storage, see this
+[guide](https://github.com/aukilabs/domain-server/blob/main/docs/deployment-azure.md) for the Auki Domain Server
+which has a very similar configuration structure in its Helm chart as this Helm chart.
+
 ## Upgrading
 
 To upgrade your deployment:

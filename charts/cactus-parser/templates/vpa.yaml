@@ -2,9 +2,9 @@
 apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
 metadata:
-  name: {{ include "cactus-backend.fullname" . }}
+  name: {{ include "cactus-parser.fullname" . }}
   labels:
-    {{- include "cactus-backend.labels" . | nindent 4 }}
+    {{- include "cactus-parser.labels" . | nindent 4 }}
 {{- if .Values.autoscaling.vpa.annotations }}
 {{- with .Values.autoscaling.vpa.annotations }}
   annotations:
@@ -14,7 +14,7 @@ metadata:
 spec:
   resourcePolicy:
     containerPolicies:
-    - containerName: {{ include "cactus-backend.fullname" . }}
+    - containerName: {{ include "cactus-parser.fullname" . }}
       {{- with .Values.autoscaling.vpa.controlledResources }}
       controlledResources:
         {{- toYaml . | nindent 8 }}
@@ -30,7 +30,7 @@ spec:
   targetRef:
     apiVersion: apps/v1
     kind: "Deployment"
-    name: {{ include "cactus-backend.fullname" . }}
+    name: {{ include "cactus-parser.fullname" . }}
   {{- if .Values.autoscaling.vpa.updatePolicy }}
   updatePolicy:
     {{- with .Values.autoscaling.vpa.updatePolicy.updateMode }}
@@ -38,3 +38,4 @@ spec:
     {{- end }}
   {{- end }}
 {{- end }}
+

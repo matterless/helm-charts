@@ -1,5 +1,5 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "cactus-backend.fullname" . -}}
+{{- $fullName := include "cactus-parser.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
 {{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.ingress.annotations "kubernetes.io/ingress.class") }}
@@ -17,7 +17,7 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "cactus-backend.labels" . | nindent 4 }}
+    {{- include "cactus-parser.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -49,13 +49,14 @@ spec:
             backend:
               {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
-                name: {{ .service | default $fullName }}
+                name: {{ $fullName }}
                 port:
-                  number: {{ .servicePort | default $svcPort }}
+                  number: {{ $svcPort }}
               {{- else }}
-              serviceName: {{ .service | default $fullName }}
-              servicePort: {{ .servicePort | default $svcPort }}
+              serviceName: {{ $fullName }}
+              servicePort: {{ $svcPort }}
               {{- end }}
           {{- end }}
     {{- end }}
 {{- end }}
+

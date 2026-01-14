@@ -25,7 +25,7 @@ dependencies:
   repository: https://juicedata.github.io/charts/
   condition: juicefs-s3-gateway.enabled
 - name: cactus-parser
-  version: 0.0.2
+  version: 0.0.3
   repository: https://charts.lookingglassprotocol.com
   condition: cactus-parser.enabled
 - name: opentelemetry-collector

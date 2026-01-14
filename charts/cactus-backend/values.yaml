@@ -402,6 +402,8 @@ opentelemetry-collector:
       containerPort: 9464
       servicePort: 9464
       protocol: TCP
+  configMap:
+    create: true
   config:
     exporters:
       prometheus:

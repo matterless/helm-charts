@@ -13,12 +13,29 @@ spec:
       {{- if .Values.monitoring.podMonitor.selector }}
       {{- toYaml .Values.monitoring.podMonitor.selector | nindent 6 }}
       {{- else }}
-      {{ include "cactus-backend.selectorLabels" . | nindent 6 }}
+      {{- include "cactus-backend.selectorLabels" . | nindent 6 }}
       {{- end }}
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}
   podMetricsEndpoints:
+    {{- if .Values.monitoring.podMonitor.endpoints }}
+    {{- range .Values.monitoring.podMonitor.endpoints }}
+    - interval: {{ .interval | default $.Values.monitoring.podMonitor.scrapeInterval }}
+      path: {{ .path | default ($.Values.monitoring.podMonitor.path | default "/metrics") }}
+      {{- if .port }}
+      port: {{ .port }}
+      {{- else if .targetPort }}
+      targetPort: {{ .targetPort }}
+      {{- else if $.Values.monitoring.podMonitor.port }}
+      port: {{ $.Values.monitoring.podMonitor.port }}
+      {{- else if $.Values.monitoring.podMonitor.targetPort }}
+      targetPort: {{ $.Values.monitoring.podMonitor.targetPort }}
+      {{- else }}
+      port: admin
+      {{- end }}
+    {{- end }}
+    {{- else }}
     - interval: {{ .Values.monitoring.podMonitor.scrapeInterval }}
       path: {{ .Values.monitoring.podMonitor.path | default "/metrics" }}
       {{- if .Values.monitoring.podMonitor.port }}
@@ -28,4 +45,5 @@ spec:
       {{- else }}
       port: admin
       {{- end }}
+    {{- end }}
 {{- end }}

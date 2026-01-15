@@ -109,6 +109,25 @@ Version 0.5.0 introduces significant changes to the feature set of the Cactus Ba
   encryption. It should be a random string of 32 characters. See the comments in
   `values.yaml`.
 
+### Upgrading to 0.5.8
+
+#### Features
+
+* The Cactus Parser is now deployed as an independent service alongside the Cactus Backend. Be sure to set the `PARSER_URL` variable to the URL of your deployed Cactus Parser instance.
+* You can now manage multiple configuration files using a ConfigMap. To enable this, set `configFiles.enabled: true` in your values file. This allows you to mount custom configuration files directly via ConfigMap.
+* Semantic event changes can be sent to an external webhook by setting `EVENTS_ENABLED: true` and providing your webhook endpoint via `EVENTS_URL` in your values or environment variables.
+* If your deployment needs to map external to internal domain IDs, set `DOMAIN_EXTERNAL_ID_MAPPINGS_FILE` to the filename or full path of your mapping file.
+
+### Upgrading to 0.5.9
+
+#### Features
+
+* OpenTelemetry support is now available. To enable telemetry collection, set the `OTEL_COLLECTOR_GRPC_ENDPOINT` environment variable to the gRPC endpoint of your OpenTelemetry Collector. This should be configured for both the Cactus Backend and Cactus Parser.
+
+  * To monitor these services with Azure Application Insights, refer to the [Azure Monitor Exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/azuremonitorexporter).
+  * For Prometheus integration, enable `podMonitor` and the `prometheus` port, and see the [Spanmetrics Connector for Prometheus](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/connector/spanmetricsconnector).
+  * For additional configuration details, consult the [OpenTelemetry Collector documentation](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-collector).
+
 ## Chart Structure
 
 - `Chart.yaml` - Chart metadata

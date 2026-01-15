@@ -81,8 +81,17 @@ affinity: {}
 monitoring:
   namespace: monitoring
   podMonitor:
-    create: false
+    create: false  # Set to true to create a PodMonitor for Prometheus-based metrics scraping. Set to false if you're not using Prometheus or don't need metrics collected.
     scrapeInterval: 10s
+    endpoints:
+    - path: /metrics
+      port: prometheus
+    # metrics port is not used by default, add it if you want to scrape collector's metrics.
+    # - path: /metrics
+    #   port: metrics
+    selector:
+      app.kubernetes.io/instance: cactus-backend  # The instance of the cactus-backend release.
+      app.kubernetes.io/name: opentelemetry-collector
 
 useExistingSecret: false
 existingSecretName: ""
@@ -330,7 +339,7 @@ envVars:
   # DOMAIN_EXTERNAL_ID_MAPPINGS_FILE: /app/config/domain_external_mappings.json  # The file containing the domain external id mappings. Only set this if you enable configFiles.
 
   # APP_KEY: cactus-backend  # This is the app key used together with the app secret (defined in the secretData above or by using existingSecret) to access Auki services. You should obtain it from the apps section of the Auki console.
-
+  OTEL_COLLECTOR_GRPC_ENDPOINT: http://cactus-backend-opentelemetry-collector:4317  # The grpc endpoint for the opentelemetry collector, it should be Release.name-opentelemetry-collector:4317.
 ## Autoscaling configuration
 ## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 autoscaling:
@@ -381,3 +390,51 @@ cactus-parser:
     enabled: false
   persistentVolume:
     enabled: false
+  envVars:
+    OTEL_COLLECTOR_GRPC_ENDPOINT: http://cactus-backend-opentelemetry-collector:4317  # The grpc endpoint for the opentelemetry collector, it should be Release.name-opentelemetry-collector:4317.
+opentelemetry-collector:
+  enabled: false
+  mode: deployment
+  image:
+    repository: otel/opentelemetry-collector-contrib
+  command:
+    name: otelcol-contrib
+  ports:
+    metrics:
+      enabled: false
+    prometheus:
+      enabled: false
+      containerPort: 9464
+      servicePort: 9464
+      protocol: TCP
+  podMonitor:
+    enabled: false  # Only need to create when it is using prometheus for collector's metrics. The metrics port needs to be enabled as well.
+  configMap:
+    create: true
+  config:
+    exporters:
+      prometheus:
+        endpoint: 0.0.0.0:9464
+      azuremonitor:
+        connection_string: ""  # See https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/azuremonitorexporter/README.md
+    connectors:
+      spanmetrics:
+        dimensions:
+          - name: http.method
+          - name: http.response.status_code
+          - name: http.route
+        resource_metrics_key_attributes:
+          - service.name
+          - service.version
+        include_instrumentation_scope:
+          - cactus-backend
+          - parser
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [spanmetrics]
+        metrics:
+          receivers: [otlp, spanmetrics]
+          exporters: [prometheus]

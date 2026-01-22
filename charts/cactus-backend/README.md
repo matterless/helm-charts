@@ -115,7 +115,7 @@ Version 0.5.0 introduces significant changes to the feature set of the Cactus Ba
 
 * The Cactus Parser is now deployed as an independent service alongside the Cactus Backend. Be sure to set the `PARSER_URL` variable to the URL of your deployed Cactus Parser instance.
 * You can now manage multiple configuration files using a ConfigMap. To enable this, set `configFiles.enabled: true` in your values file. This allows you to mount custom configuration files directly via ConfigMap.
-* Semantic events can be sent to an external webhook by setting `EVENTS_ENABLED: true` and providing your webhook endpoint via `EVENTS_URL`, webhook auth token via `EVENTS_AUTH_TOKEN` in Cactus Backend's environment variables or secrets.
+* Semantic events can be sent to an external webhook by setting `EVENTS_ENABLED: true` and providing your webhook endpoint via `EVENTS_URL`, webhook auth token via `EVENTS_AUTH_TOKEN` in Cactus Backend's environment variables or secrets. By default, semantic events are processed and sent every 5 minutes. If you need to adjust this frequency, update `CRONJOBS_PROCESS_EVENTS_SCHEDULE` in the values or environment variables.
 * If your deployment needs to map external to internal domain IDs, set `DOMAIN_EXTERNAL_ID_MAPPINGS_FILE` to the filename or full path of your mapping file.
 
 ### Upgrading to 0.5.9

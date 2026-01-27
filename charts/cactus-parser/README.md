@@ -31,7 +31,11 @@ helm uninstall cactus-parser
 
 ## Configuration
 
+The default parser is PIDB which requires PostgreSQL but other parsers can also be used as instructed by Auki Labs.
+
 Refer to the [values.yaml](./values.yaml) file for a comprehensive list of configurable parameters and their default values.
+If you're using a parser other than the default one, some environment variable may be irrelevant and can be deleted,
+such as those for PostgreSQL.
 
 You can specify parameters with `--set key=value` or by providing a custom YAML file:
 

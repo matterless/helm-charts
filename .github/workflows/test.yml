@@ -73,7 +73,11 @@ jobs:
           AUTH_JWT_PROFILE: ${{ secrets.AUTH_JWT_PROFILE }}
           APP_SECRET: ${{ secrets.APP_SECRET }}
           APP_KEY: ${{ secrets.APP_KEY }}
-        run: find charts/*/scripts -name pre-install.sh -exec {} \;
+        run: |
+          find charts/*/scripts -name pre-install.sh -print0 | while IFS= read -r -d '' script; do
+            echo "--- Executing: $script ---"
+            "$script"
+          done
 
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'

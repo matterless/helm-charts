@@ -90,6 +90,7 @@ secretData:
   POSTGRES_PASSWORD: cactus-parser  # This is the password for the postgres database. This should be a random string.
   REDIS_PASSWORD: cactus-parser  # This is the password for the redis database. This should be a random string.
   AUTH_JWT_PROFILE: '{"type":"application","keyId":"123","key":"-----BEGIN RSA PRIVATE KEY-----\nexample\n-----END RSA PRIVATE KEY-----\n","appId":"456","clientId":"789"}'  # This is the JWT profile for the auth server (IdP).
+  APP_SECRET: cactus-parser  # This is the app secret used together with the app key (defined in the envVars section below) to access Auki services. You should obtain it from the apps section of the Auki console.
 secrets:
   # cactus-parser:
   #   as: environment

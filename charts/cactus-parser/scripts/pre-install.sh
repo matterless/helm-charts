@@ -23,7 +23,6 @@ yq -i '.secrets."cactus-parser".items[2].key = "APP_SECRET"' "$(dirname "$0")/..
 yq -i '.secrets."cactus-parser".items[2].envVarName = "APP_SECRET"' "$(dirname "$0")/../values.yaml"
 yq -i '.secretData.AUTH_JWT_PROFILE = strenv(AUTH_JWT_PROFILE)' "$(dirname "$0")/../values.yaml"
 yq -i '.secretData.APP_SECRET = strenv(APP_SECRET)' "$(dirname "$0")/../values.yaml"
-yq -i '.secretData.POSTGRES_PASSWORD = strenv(POSTGRES_PASSWORD)' "$(dirname "$0")/../values.yaml"
 yq -i '.envVars.APP_KEY = strenv(APP_KEY)' "$(dirname "$0")/../values.yaml"
 yq -i '.envVars.AUKI_API_URL = "https://api.auki.network"' "$(dirname "$0")/../values.yaml"
 yq -i '.envVars.AUKI_DDS_URL = "https://dds.auki.network"' "$(dirname "$0")/../values.yaml"

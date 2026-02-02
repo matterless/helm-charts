@@ -87,8 +87,8 @@ monitoring:
 useExistingSecret: false
 existingSecretName: ""
 secretData:
-  POSTGRES_PASSWORD: cactus-parser  # This is the password for the postgres database. This should be a random string.
-  REDIS_PASSWORD: cactus-parser  # This is the password for the redis database. This should be a random string.
+  POSTGRES_PASSWORD: cactus-parser  # Can be commented out if you're not using the default PIDB parser. Otherwise make sure this matches the postgres.auth.password value.
+  REDIS_PASSWORD: cactus-parser  # Can be commented out if you're not using the default PIDB parser. Otherwise make sure this matches the redis.auth.password value.
 secrets:
   # cactus-parser:
   #   as: environment
@@ -177,13 +177,14 @@ persistentVolume:
 
 # https://github.com/bitnami/charts/tree/postgresql/16.7.27/bitnami/postgresql#parameters
 postgresql:
-  # If true, the PostgreSQL dependency is enabled
+  # If true, the PostgreSQL dependency is enabled.
+  # You can disable it if you want to use an external database or if you are not using the default PIDB parser.
   enabled: true
   image:
     repository: bitnamilegacy/postgresql
   auth:
     username: cactus-parser
-    password: cactus-parser
+    password: cactus-parser  # Make sure this matches the POSTGRES_PASSWORD in the secretData section. Also, don't use the default password in production!
     database: cactus-parser
   primary:
     # resources:
@@ -201,7 +202,8 @@ postgresql:
 
 # https://github.com/bitnami/charts/tree/redis/22.0.7/bitnami/redis#parameters
 redis:
-  # If true, the Redis dependency is enabled
+  # If true, the Redis dependency is enabled.
+  # You can disable it if you want to use an external Redis instance or if you are not using the default PIDB parser.
   enabled: false
   image:
     repository: bitnamilegacy/redis
@@ -244,7 +246,7 @@ redis:
       - FLUSHDB
   auth:
     enabled: true
-    password: cactus-parser
+    password: cactus-parser  # Make sure this matches the REDIS_PASSWORD in the secretData section. Also, don't use the default password in production!
   fullnameOverride: redis
 
 postgresqlha:

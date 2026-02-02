@@ -132,7 +132,7 @@ Version 0.5.0 introduces significant changes to the feature set of the Cactus Ba
 
 #### Features
 
-* You can enable or disable OpenTelemetry for both the application and its dependencies as needed. To activate OpenTelemetry in both the Cactus Backend and the opentelemetry-collector dependency, set `cactus-backend.envVars.OTEL_ENABLED` to `true`.
+* OpenTelemetry can be toggled on or off as required. To enable it for both the Cactus Backend and Cactus Parser, set `cactus-backend.envVars.OTEL_ENABLED` and `cactus-backend.cactus-parser.envVars.OTEL_ENABLED` to `true`.
 
 ## Chart Structure
 

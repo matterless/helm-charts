@@ -63,7 +63,7 @@ To upgrade your deployment:
 helm upgrade cactus-backend matterless/cactus-backend
 ```
 
-**Important:**  
+**Important:**
 Before upgrading from chart version please review the following steps:
 
 1. **Review the [values.yaml](./values.yaml) file** for any new, deprecated, or changed configuration options.
@@ -127,6 +127,12 @@ Version 0.5.0 introduces significant changes to the feature set of the Cactus Ba
   * To monitor these services with Azure Application Insights, refer to the [Azure Monitor Exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/azuremonitorexporter).
   * For Prometheus integration, enable `podMonitor` and the `prometheus` port, and see the [Spanmetrics Connector for Prometheus](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/connector/spanmetricsconnector).
   * For additional configuration details, consult the [OpenTelemetry Collector documentation](https://github.com/open-telemetry/opentelemetry-helm-charts/tree/main/charts/opentelemetry-collector).
+
+### Upgrading to 0.5.11
+
+#### Fixes
+
+* OpenTelemetry integration is now disabled by default. To enable telemetry for both the Cactus Backend and Cactus Parser, set `cactus-backend.envVars.OTEL_ENABLED` and `cactus-backend.cactus-parser.envVars.OTEL_ENABLED` to `true` in your configuration. If you would like to use the OpenTelemetry sub-chart it can be enabled by setting `opentelemetry-collector.enable` to true just like before.
 
 ## Chart Structure
 

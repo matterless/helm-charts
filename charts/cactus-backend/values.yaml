@@ -340,7 +340,6 @@ envVars:
 
   # APP_KEY: cactus-backend  # This is the app key used together with the app secret (defined in the secretData above or by using existingSecret) to access Auki services. You should obtain it from the apps section of the Auki console.
   OTEL_COLLECTOR_GRPC_ENDPOINT: http://cactus-backend-opentelemetry-collector:4317  # The grpc endpoint for the opentelemetry collector, it should be Release.name-opentelemetry-collector:4317.
-  OTEL_ENABLED: false
 ## Autoscaling configuration
 ## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 autoscaling:

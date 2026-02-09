@@ -51,7 +51,7 @@ To upgrade your deployment:
 helm upgrade cactus-parser matterless/cactus-parser
 ```
 
-**Important:**  
+**Important:**
 Before upgrading from chart version please review the following steps:
 
 1. **Review the [values.yaml](./values.yaml) file** for any new, deprecated, or changed configuration options.
@@ -63,6 +63,13 @@ Before upgrading from chart version please review the following steps:
    ```
 4. **Backup:** If your deployment uses persistent data, ensure you have backups.
 5. **Test:** Consider upgrading in a staging environment before production.
+
+### Upgrading to 0.0.7
+
+#### Fixes
+
+* Environment variables from `envVars` that are `null`, invalid, or empty strings are now omitted from the workload. This is mainly for the case when you need to overwrite env vars with secrets: duplicated env names (e.g. the same key in both `envVars` and `secrets`) can cause "Failed to compare desired state to live state" in ArgoCD. By omitting empty values, you can leave a key unset in `envVars` and provide it only via `secretKeyRef` without conflicts. No changes required to your values—this is transparent.
+
 
 ## Chart Structure
 

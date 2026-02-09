@@ -132,7 +132,13 @@ Version 0.5.0 introduces significant changes to the feature set of the Cactus Ba
 
 #### Fixes
 
-* OpenTelemetry integration is now disabled by default. To enable telemetry for both the Cactus Backend and Cactus Parser, set `cactus-backend.envVars.OTEL_ENABLED` and `cactus-backend.cactus-parser.envVars.OTEL_ENABLED` to `true` in your configuration. If you would like to use the OpenTelemetry sub-chart it can be enabled by setting `opentelemetry-collector.enable` to true just like before.
+* OpenTelemetry integration is now disabled by default. To enable telemetry for both the Cactus Backend and Cactus Parser, set `cactus-backend.envVars.OTEL_ENABLED` and `cactus-backend.cactus-parser.envVars.OTEL_ENABLED` to `true` in your configuration. If you would like to use the OpenTelemetry sub-chart it can be enabled by setting `opentelemetry-collector.enable` to `true` just like before.
+
+### Upgrading to 0.5.12
+
+#### Fixes
+
+* Environment variables from `envVars` that are `null`, invalid, or empty strings are now omitted from the workload. This is mainly for the case when you need to overwrite env vars with secrets: duplicated env names (e.g. the same key in both `envVars` and `secrets`) can cause "Failed to compare desired state to live state" in ArgoCD. By omitting empty values, you can leave a key unset in `envVars` and provide it only via `secretKeyRef` without conflicts. No changes required to your values—this is transparent.
 
 ## Chart Structure
 

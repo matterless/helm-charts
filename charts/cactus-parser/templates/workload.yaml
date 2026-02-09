@@ -75,8 +75,10 @@ spec:
               subPath: "{{ .Values.persistentVolume.subPath }}"
           env:
           {{- range $key, $value := .Values.envVars }}
+            {{- if and (ne (typeOf $value) "nil") (not (kindIs "invalid" $value)) (not (and (kindIs "string" $value) (eq (trim $value) ""))) }}
             - name: {{ $key }}
               value: {{ quote $value }}
+            {{- end }}
           {{- end }}
           {{- range $secretSource, $secretConfig := $secrets }}
             {{- if eq $secretSource "cactus-parser" }}{{ $secretSource = $secretName }}{{- end }}

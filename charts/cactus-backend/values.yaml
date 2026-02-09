@@ -339,8 +339,16 @@ envVars:
   # DOMAIN_EXTERNAL_ID_MAPPINGS_FILE: /app/config/domain_external_mappings.json  # The file containing the domain external id mappings. Only set this if you enable configFiles.
 
   # APP_KEY: cactus-backend  # This is the app key used together with the app secret (defined in the secretData above or by using existingSecret) to access Auki services. You should obtain it from the apps section of the Auki console.
-  OTEL_COLLECTOR_GRPC_ENDPOINT: http://cactus-backend-opentelemetry-collector:4317  # The grpc endpoint for the opentelemetry collector, it should be Release.name-opentelemetry-collector:4317.
   OTEL_ENABLED: false
+  OTEL_COLLECTOR_GRPC_ENDPOINT: http://cactus-backend-opentelemetry-collector:4317  # The grpc endpoint for the opentelemetry collector, it should be Release.name-opentelemetry-collector:4317.
+
+  PUSH_NOTIFICATIONS_FIREBASE_ENABLED: false  # Whether to enable push notifications via Firebase.
+  CRONJOBS_SEND_PUSH_NOTIFICATIONS_SCHEDULE: "0 */5 * * * *"  # The schedule for the cron job to send push notifications.
+  CRONJOBS_CLEANUP_NOTIFICATIONS_SCHEDULE: "0 0 * * * *"  # The schedule for the cron job to cleanup notifications.
+  NOTIFICATIONS_RETENTION_DAYS: 5  # The retention days for the processed notifications.
+  PUSH_NOTIFICATIONS_TIMEOUT_SECS: 3600  # The timeout for pushing notifications in seconds.
+  PUSH_NOTIFICATIONS_BATCH_SIZE: 100  # The batch size for sending push notifications.
+  PUSH_NOTIFICATIONS_MAX_ATTEMPTS: 3  # The maximum number of attempts to push a notification.
 ## Autoscaling configuration
 ## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 autoscaling:

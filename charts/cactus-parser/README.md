@@ -64,6 +64,12 @@ Before upgrading from chart version please review the following steps:
 4. **Backup:** If your deployment uses persistent data, ensure you have backups.
 5. **Test:** Consider upgrading in a staging environment before production.
 
+### Upgrading to 0.0.6
+
+#### Fixes
+
+* OpenTelemetry integration is now disabled by default. To enable telemetry for Cactus Parser, set `cactus-parser.envVars.OTEL_ENABLED` to `true` in your configuration.
+
 ### Upgrading to 0.0.7
 
 #### Fixes

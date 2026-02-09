@@ -132,7 +132,7 @@ Version 0.5.0 introduces significant changes to the feature set of the Cactus Ba
 
 #### Fixes
 
-* OpenTelemetry integration is now disabled by default. To enable telemetry for both the Cactus Backend and Cactus Parser, set `cactus-backend.envVars.OTEL_ENABLED` and `cactus-backend.cactus-parser.envVars.OTEL_ENABLED` to `true` in your configuration. If you would like to use the OpenTelemetry sub-chart it can be enabled by setting `opentelemetry-collector.enable` to true just like before.
+* OpenTelemetry integration is now disabled by default. To enable telemetry for both the Cactus Backend and Cactus Parser, set `cactus-backend.envVars.OTEL_ENABLED` and `cactus-backend.cactus-parser.envVars.OTEL_ENABLED` to `true` in your configuration. If you would like to use the OpenTelemetry sub-chart it can be enabled by setting `opentelemetry-collector.enable` to `true` just like before.
 
 ### Upgrading to 0.5.12
 

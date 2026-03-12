@@ -115,6 +115,8 @@ secrets:
       envVarName: AUTH_JWT_PROFILE
     - key: APP_SECRET
       envVarName: APP_SECRET
+    # - key: EVENTS_AUTH_KEY
+    #   envVarName: EVENTS_AUTH_KEY
   # juicefs-secret:
   #   as: environment
   #   items:

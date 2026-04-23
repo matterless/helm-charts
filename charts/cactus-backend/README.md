@@ -105,9 +105,9 @@ Version 0.5.0 introduces significant changes to the feature set of the Cactus Ba
   when `useExistingSecret` is `true`.
 * `AUTH_JWT_PROFILE` is another secret that needs to be obtained from Auki staff to be
   able to log in to the backend.
-* A Firebase token encryption key (`TOKEN_ENCRYPTION_KEY`) was required in early 0.5.x
-  releases. Cactus Backend v0.2.10 and this chart’s later versions no longer use
-  it; see **Upgrading to 0.5.14** below.
+* A Firebase token encryption key (`TOKEN_ENCRYPTION_KEY`) was required for Cactus
+  Backend app versions before v0.2.10. v0.2.10+ and this chart’s later versions no
+  longer use it; see **Upgrading to 0.5.14** below.
 
 ### Upgrading to 0.5.8
 
@@ -144,13 +144,9 @@ Version 0.5.0 introduces significant changes to the feature set of the Cactus Ba
 
 #### Changes (Cactus Backend v0.2.10+)
 
-* `TOKEN_ENCRYPTION_KEY` has been removed from the chart. Cactus Backend v0.2.10 no longer
-  uses this value. After upgrading the application image, remove any `TOKEN_ENCRYPTION_KEY` entry
-  from `secretData` and from the `secrets.cactus-backend.items` list in your values, and
-  remove the key from your existing Secret if you use `useExistingSecret` / `existingSecretName`.
-
-  If you still run an image older than v0.2.10, keep supplying the key through your
-  secret values until you upgrade the backend.
+* The chart no longer defines `TOKEN_ENCRYPTION_KEY`. Cactus Backend v0.2.10+ does not use it.
+* After you upgrade the application image to v0.2.10 or later, remove that key from `secretData`, from the `secrets.cactus-backend.items` list in your values, and from your existing Secret if you use `useExistingSecret` or `existingSecretName`.
+* If the application image is still older than v0.2.10, keep the key in your secret values until you upgrade the backend.
 
 ## Chart Structure
 

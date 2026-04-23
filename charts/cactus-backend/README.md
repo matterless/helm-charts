@@ -105,9 +105,9 @@ Version 0.5.0 introduces significant changes to the feature set of the Cactus Ba
   when `useExistingSecret` is `true`.
 * `AUTH_JWT_PROFILE` is another secret that needs to be obtained from Auki staff to be
   able to log in to the backend.
-* `TOKEN_ENCRYPTION_KEY` is another secret which is the key for the Firebase token
-  encryption. It should be a random string of 32 characters. See the comments in
-  `values.yaml`.
+* A Firebase token encryption key (`TOKEN_ENCRYPTION_KEY`) was required in early 0.5.x
+  releases. Cactus Backend v0.2.10 and this chart’s later versions no longer use
+  it; see **Upgrading to 0.5.14** below.
 
 ### Upgrading to 0.5.8
 
@@ -139,6 +139,18 @@ Version 0.5.0 introduces significant changes to the feature set of the Cactus Ba
 #### Fixes
 
 * Environment variables from `envVars` that are `null`, invalid, or empty strings are now omitted from the workload. This is mainly for the case when you need to overwrite env vars with secrets: duplicated env names (e.g. the same key in both `envVars` and `secrets`) can cause "Failed to compare desired state to live state" in ArgoCD. By omitting empty values, you can leave a key unset in `envVars` and provide it only via `secretKeyRef` without conflicts. No changes required to your values—this is transparent.
+
+### Upgrading to 0.5.14
+
+#### Changes (Cactus Backend v0.2.10+)
+
+* `TOKEN_ENCRYPTION_KEY` has been removed from the chart. Cactus Backend v0.2.10 no longer
+  uses this value. After upgrading the application image, remove any `TOKEN_ENCRYPTION_KEY` entry
+  from `secretData` and from the `secrets.cactus-backend.items` list in your values, and
+  remove the key from your existing Secret if you use `useExistingSecret` / `existingSecretName`.
+
+  If you still run an image older than v0.2.10, keep supplying the key through your
+  secret values until you upgrade the backend.
 
 ## Chart Structure
 

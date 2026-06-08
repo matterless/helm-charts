@@ -28,16 +28,6 @@ data:
 
       sed -i "${sed_script}" *.js
     done
-
-    # Older web bundles embed __EXPO_PUBLIC_ZITADEL_*__ placeholders; map from AUTH env vars.
-    auth_issuer="$(eval echo "\$EXPO_PUBLIC_AUTH_ISSUER")"
-    auth_client_id_web="$(eval echo "\$EXPO_PUBLIC_AUTH_CLIENT_ID_WEB")"
-    if [ -n "$auth_issuer" ]; then
-      sed -i "s~__EXPO_PUBLIC_ZITADEL_ISSUER__~${auth_issuer}~g" *.js
-    fi
-    if [ -n "$auth_client_id_web" ]; then
-      sed -i "s~__EXPO_PUBLIC_ZITADEL_CLIENT_ID_WEB__~${auth_client_id_web}~g" *.js
-    fi
   nginx-default.conf: |
     server {
         listen       8080;

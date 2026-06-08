@@ -75,8 +75,6 @@ spec:
               mountPath: /var/run
             - name: nginx-tmp
               mountPath: /tmp
-            - name: static-html
-              mountPath: /usr/share/nginx/html
             - name: cactus
               mountPath: /etc/nginx/conf.d/default.conf
               subPath: nginx-default.conf
@@ -118,8 +116,6 @@ spec:
         - name: nginx-run
           emptyDir: {}
         - name: nginx-tmp
-          emptyDir: {}
-        - name: static-html
           emptyDir: {}
         - name: cactus
           configMap:

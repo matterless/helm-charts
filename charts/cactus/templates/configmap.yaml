@@ -9,24 +9,36 @@ data:
     #!/bin/sh
     cd /usr/share/nginx/html/_expo/static/js/web/
 
-    prefix="EXPO_PUBLIC"
-    for var in \
-      API_URL \
-      DDS_URL \
-      AUKI_APP_KEY \
-      AUKI_APP_SECRET \
-      DS_URL \
-      AMPLITUDE_PROD_API_KEY \
-      AUTH_ISSUER \
-      AUTH_CLIENT_ID_WEB \
-      JOYSTICK_API_KEY \
-      ; do
-      var_name="${prefix}_${var}"
-      eval_cmd="echo \"\$${var_name}\""
-      var_value="$(eval "${eval_cmd}")"
-      sed_script="s~__${var_name}__~${var_value}~g"
+    for prefix in REACT_APP EXPO_PUBLIC; do
+      for var in \
+        API_URL \
+        DDS_URL \
+        POCKETBASE_URL \
+        AUKI_APP_KEY \
+        AUKI_APP_SECRET \
+        DS_URL \
+        VEII_DEV_API_STORE_BRAND_ID \
+        VEII_DEV_API_SECRET \
+        VEII_DEV_API_USERNAME \
+        VEII_DEV_API_PASSWORD \
+        VEII_DEV_URL \
+        VEII_DEV_STORE_CODE \
+        CACTUS_ENABLE_PRODUCT_SCANNING \
+        CACTUS_ENABLE_DEV_ANALYTICS \
+        CACTUS_ENABLE_VEII \
+        AMPLITUDE_DEV_API_KEY \
+        AMPLITUDE_PROD_API_KEY \
+        AUTH_ISSUER \
+        AUTH_CLIENT_ID_WEB \
+        JOYSTICK_API_KEY \
+        ; do
+        var_name="${prefix}_${var}"
+        eval_cmd="echo \"\$${var_name}\""
+        var_value="$(eval "${eval_cmd}")"
+        sed_script="s~__${var_name}__~${var_value}~g"
 
-      sed -i "${sed_script}" *.js
+        sed -i "${sed_script}" *.js
+      done
     done
   nginx-default.conf: |
     server {

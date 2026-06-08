@@ -143,35 +143,24 @@ tolerations: []
 affinity: {}
 
 envVars:
-  # Client-facing — required for self-hosted deployments
   EXPO_PUBLIC_DDS_URL: "https://dds.auki.network/"
   EXPO_PUBLIC_API_URL: "https://api.auki.network/"
   EXPO_PUBLIC_AUTH_ISSUER: "https://auth.auki.network"
   EXPO_PUBLIC_AUTH_CLIENT_ID_WEB: ""  # Obtain from Auki
-  EXPO_PUBLIC_AUKI_APP_KEY: ""  # Obtain from Auki console
 
-  # Auki-internal only — leave blank for client self-hosting
-  EXPO_PUBLIC_POCKETBASE_URL: ""
-  EXPO_PUBLIC_VEII_DEV_API_STORE_BRAND_ID: ""
-  EXPO_PUBLIC_VEII_DEV_URL: ""
-  EXPO_PUBLIC_VEII_DEV_STORE_CODE: ""
-  EXPO_PUBLIC_CACTUS_ENABLE_PRODUCT_SCANNING: ""
-  EXPO_PUBLIC_CACTUS_ENABLE_DEV_ANALYTICS: ""
-  EXPO_PUBLIC_CACTUS_ENABLE_VEII: ""
+  # This is the app key used together with the app secret (defined in the secretData below or by using existingSecret)
+  # to access Auki services. You should obtain it from the apps section of the Auki console.
+  EXPO_PUBLIC_AUKI_APP_KEY: ""
 
 useExistingSecret: false
 existingSecretName: ""
 secretData:
-  # Client-facing — required for self-hosted deployments
   EXPO_PUBLIC_AMPLITUDE_PROD_API_KEY: ""  # Obtain from Auki
   EXPO_PUBLIC_JOYSTICK_API_KEY: ""  # Obtain from Auki
-  EXPO_PUBLIC_AUKI_APP_SECRET: ""  # Obtain from Auki console
 
-  # Auki-internal only — leave blank for client self-hosting
-  EXPO_PUBLIC_VEII_DEV_API_SECRET: ""
-  EXPO_PUBLIC_VEII_DEV_API_USERNAME: ""
-  EXPO_PUBLIC_VEII_DEV_API_PASSWORD: ""
-  EXPO_PUBLIC_AMPLITUDE_DEV_API_KEY: ""
+  # This is the app secret used together with the app key (defined in the envVars section above)
+  # to access Auki services. You should obtain it from the apps section of the Auki console.
+  EXPO_PUBLIC_AUKI_APP_SECRET: ""
 
 # Secrets configuration section.
 # This section allows you to define Kubernetes secrets to be used by the application.

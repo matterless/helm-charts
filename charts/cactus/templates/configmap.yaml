@@ -9,24 +9,19 @@ data:
     #!/bin/sh
     cd /usr/share/nginx/html/_expo/static/js/web/
 
-    prefix="EXPO_PUBLIC"
-    for var in \
-      API_URL \
-      DDS_URL \
-      AUKI_APP_KEY \
-      AUKI_APP_SECRET \
-      DS_URL \
-      AMPLITUDE_PROD_API_KEY \
-      AUTH_ISSUER \
-      AUTH_CLIENT_ID_WEB \
-      JOYSTICK_API_KEY \
-      ; do
-      var_name="${prefix}_${var}"
-      eval_cmd="echo \"\$${var_name}\""
-      var_value="$(eval "${eval_cmd}")"
-      sed_script="s~__${var_name}__~${var_value}~g"
+    for prefix in{{- range .Values.entrypointPrefixes }} {{ . }}{{- end }}; do
+      for var in \
+      {{- range .Values.entrypointEnvVars }}
+        {{ . }} \
+      {{- end }}
+        ; do
+        var_name="${prefix}_${var}"
+        eval_cmd="echo \"\$${var_name}\""
+        var_value="$(eval "${eval_cmd}")"
+        sed_script="s~__${var_name}__~${var_value}~g"
 
-      sed -i "${sed_script}" *.js
+        sed -i "${sed_script}" *.js
+      done
     done
   nginx-default.conf: |
     server {

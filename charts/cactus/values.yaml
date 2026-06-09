@@ -37,7 +37,7 @@ securityContext:
   capabilities:
     drop:
     - ALL
-  readOnlyRootFilesystem: true
+  readOnlyRootFilesystem: false
   runAsNonRoot: true
   runAsUser: 101
 
@@ -141,6 +141,20 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# Environment variable names substituted into JS bundles by 40-react-env-vars.sh.
+entrypointPrefixes:
+  - EXPO_PUBLIC
+entrypointEnvVars:
+  - API_URL
+  - DDS_URL
+  - AUKI_APP_KEY
+  - AUKI_APP_SECRET
+  - DS_URL
+  - AMPLITUDE_PROD_API_KEY
+  - AUTH_ISSUER
+  - AUTH_CLIENT_ID_WEB
+  - JOYSTICK_API_KEY
 
 envVars:
   EXPO_PUBLIC_DDS_URL: "https://dds.auki.network/"

@@ -151,7 +151,6 @@ entrypointEnvVars:
   - AUKI_APP_KEY
   - AUKI_APP_SECRET
   - DS_URL
-  - APP_ENV
   - AMPLITUDE_PROD_API_KEY
   - AUTH_ISSUER
   - AUTH_CLIENT_ID_WEB
@@ -160,7 +159,6 @@ entrypointEnvVars:
 envVars:
   EXPO_PUBLIC_DDS_URL: "https://dds.auki.network/"
   EXPO_PUBLIC_API_URL: "https://api.auki.network/"
-  EXPO_PUBLIC_APP_ENV: "production"
   EXPO_PUBLIC_AUTH_ISSUER: "https://auth.auki.network"
   EXPO_PUBLIC_AUTH_CLIENT_ID_WEB: ""  # Obtain from Auki
 

@@ -42,9 +42,7 @@ helm install cactus matterless/cactus -f my-values.yaml
 ```
 
 Please go through the whole `values.yaml` file and follow the instructions in the comments to configure the application
-to suit your environment and needs. Credentials like the Amplitude API key and Joystick API key can be
-obtained from the [console](https://console.auki.network/) and for configurations like the Zitadel client ID,
-reach out to Auki for help.
+to suit your environment and needs. Get credentials like the Amplitude API key and Joystick API key from Auki.
 
 ## Upgrading
 
@@ -69,13 +67,11 @@ Before upgrading, please review the following steps:
 
 ### Upgrading to 0.0.4
 
-**Breaking change — app key and secret removed from values.**
+**app key and secret removed from values.**
 
-`EXPO_PUBLIC_AUKI_APP_KEY`, `EXPO_PUBLIC_AUKI_APP_SECRET`, `AUKI_APP_KEY`, and `AUKI_APP_SECRET` have been removed from the chart. They must not be embedded in the client-facing helm chart.
+`EXPO_PUBLIC_AUKI_APP_KEY`, `EXPO_PUBLIC_AUKI_APP_SECRET` are no longer needed from Cactus v0.12.2.
 
 If you have been overriding these values, they are no longer recognized and should be removed from your custom values file.
-
-The `EXPO_PUBLIC_AUKI_API_PROJECT_ID` (value: `342480985197117780`) and `AUKI_API_PROJECT_ID` should be used instead to identify the API project at runtime. These are already set as defaults in `values.yaml` and do not need to be provided by users.
 
 ## Chart Structure
 

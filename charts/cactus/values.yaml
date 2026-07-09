@@ -148,8 +148,7 @@ entrypointPrefixes:
 entrypointEnvVars:
   - API_URL
   - DDS_URL
-  - AUKI_APP_KEY
-  - AUKI_APP_SECRET
+  - AUKI_API_PROJECT_ID
   - DS_URL
   - AMPLITUDE_PROD_API_KEY
   - AUTH_ISSUER
@@ -161,20 +160,13 @@ envVars:
   EXPO_PUBLIC_API_URL: "https://api.auki.network/"
   EXPO_PUBLIC_AUTH_ISSUER: "https://auth.auki.network"
   EXPO_PUBLIC_AUTH_CLIENT_ID_WEB: ""  # Obtain from Auki
-
-  # This is the app key used together with the app secret (defined in the secretData below or by using existingSecret)
-  # to access Auki services. You should obtain it from the apps section of the Auki console.
-  EXPO_PUBLIC_AUKI_APP_KEY: ""
+  EXPO_PUBLIC_AUKI_API_PROJECT_ID: "342480985197117780"
 
 useExistingSecret: false
 existingSecretName: ""
 secretData:
   EXPO_PUBLIC_AMPLITUDE_PROD_API_KEY: ""  # Obtain from Auki
   EXPO_PUBLIC_JOYSTICK_API_KEY: ""  # Obtain from Auki
-
-  # This is the app secret used together with the app key (defined in the envVars section above)
-  # to access Auki services. You should obtain it from the apps section of the Auki console.
-  EXPO_PUBLIC_AUKI_APP_SECRET: ""
 
 # Secrets configuration section.
 # This section allows you to define Kubernetes secrets to be used by the application.

@@ -1,0 +1,21 @@
+dependencies:
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 16.7.27
+- name: postgresql-ha
+  repository: https://charts.bitnami.com/bitnami
+  version: 16.3.2
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 22.0.7
+- name: juicefs-s3-gateway
+  repository: https://juicedata.github.io/charts/
+  version: 0.11.3
+- name: cactus-parser
+  repository: https://charts.lookingglassprotocol.com
+  version: 0.0.6
+- name: opentelemetry-collector
+  repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+  version: 0.143.0
+digest: sha256:ec243646bcca728abb792175ce3d63f1a165e128f36cad57de261d3ed9423853
+generated: "2026-07-09T04:27:33.242273198Z"

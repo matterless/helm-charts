@@ -1,0 +1,15 @@
+dependencies:
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 16.7.27
+- name: postgresql-ha
+  repository: https://charts.bitnami.com/bitnami
+  version: 16.3.2
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 22.0.7
+- name: juicefs-s3-gateway
+  repository: https://juicedata.github.io/charts/
+  version: 0.11.3
+digest: sha256:01f5fa984e379962882c78a6308c3661763541238a7a775043bce7ada56b0058
+generated: "2026-07-09T04:28:24.442791849Z"

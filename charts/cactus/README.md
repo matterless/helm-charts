@@ -52,7 +52,7 @@ To upgrade your deployment:
 helm upgrade cactus matterless/cactus
 ```
 
-**Important:**  
+**Important:**
 Before upgrading, please review the following steps:
 
 1. **Review the [values.yaml](./values.yaml) file** for any new, deprecated, or changed configuration options.
@@ -65,11 +65,11 @@ Before upgrading, please review the following steps:
 4. **Backup:** If your deployment uses persistent data, ensure you have backups.
 5. **Test:** Consider upgrading in a staging environment before production.
 
-### Upgrading to 0.0.4
+### Upgrading to 0.0.5
 
 **app key and secret removed from values.**
 
-`EXPO_PUBLIC_AUKI_APP_KEY`, `EXPO_PUBLIC_AUKI_APP_SECRET` are no longer needed from Cactus v0.12.2.
+`EXPO_PUBLIC_AUKI_APP_KEY`, `EXPO_PUBLIC_AUKI_APP_SECRET` are no longer needed from Cactus v0.11.3.
 
 If you have been overriding these values, they are no longer recognized and should be removed from your custom values file.
 

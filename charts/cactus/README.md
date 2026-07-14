@@ -76,9 +76,11 @@ deployment at a different retail-ops config. The variable is also registered in
 `entrypointEnvVars` so it gets substituted into the JS bundles at container startup.
 
 No action is required for existing deployments: older Cactus versions ignore the variable, and
-versions that support it fall back to the production URL when it is unset. Note that if you
-override the `entrypointEnvVars` list in a custom values file, you must add `RETAIL_OPS_CONFIG_URL`
-to your override for the variable to take effect.
+versions that support it fall back to the production URL whenever the value is unset or not
+substituted (an error is logged in the browser console). If you override the `entrypointEnvVars`
+list in a custom values file **and** want a non-default config URL, add `RETAIL_OPS_CONFIG_URL` to
+your list — otherwise your custom URL is never substituted into the JS bundles and the app quietly
+stays on the production fallback.
 
 ### Upgrading to 0.0.5
 

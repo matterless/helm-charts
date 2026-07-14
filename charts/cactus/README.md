@@ -65,6 +65,21 @@ Before upgrading, please review the following steps:
 4. **Backup:** If your deployment uses persistent data, ensure you have backups.
 5. **Test:** Consider upgrading in a staging environment before production.
 
+### Upgrading to 0.0.6
+
+**New environment variable: `EXPO_PUBLIC_RETAIL_OPS_CONFIG_URL`.**
+
+The retail-ops client configuration URL is now configurable instead of being hardcoded to the
+production URL in the app. The chart defaults to the production config
+(`https://config.lookingglassprotocol.com/retail-ops.json`); override it in `envVars` to point a
+deployment at a different retail-ops config. The variable is also registered in
+`entrypointEnvVars` so it gets substituted into the JS bundles at container startup.
+
+No action is required for existing deployments: older Cactus versions ignore the variable, and
+versions that support it fall back to the production URL when it is unset. Note that if you
+override the `entrypointEnvVars` list in a custom values file, you must add `RETAIL_OPS_CONFIG_URL`
+to your override for the variable to take effect.
+
 ### Upgrading to 0.0.5
 
 **app key and secret removed from values.**

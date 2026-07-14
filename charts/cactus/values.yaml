@@ -156,12 +156,14 @@ entrypointEnvVars:
   - AUTH_ISSUER
   - AUTH_CLIENT_ID_WEB
   - JOYSTICK_API_KEY
+  - RETAIL_OPS_CONFIG_URL
 
 envVars:
   EXPO_PUBLIC_DDS_URL: "https://dds.auki.network/"
   EXPO_PUBLIC_API_URL: "https://api.auki.network/"
   EXPO_PUBLIC_AUTH_ISSUER: "https://auth.auki.network"
   EXPO_PUBLIC_AUTH_CLIENT_ID_WEB: ""  # Obtain from Auki
+  EXPO_PUBLIC_RETAIL_OPS_CONFIG_URL: "https://config.lookingglassprotocol.com/retail-ops.json"
   EXPO_PUBLIC_AUKI_API_PROJECT_ID: "342480985197117780"
 
 useExistingSecret: false

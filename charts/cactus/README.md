@@ -65,6 +65,18 @@ Before upgrading, please review the following steps:
 4. **Backup:** If your deployment uses persistent data, ensure you have backups.
 5. **Test:** Consider upgrading in a staging environment before production.
 
+### Upgrading to 0.0.7
+
+**`AUKI_APP_KEY` / `AUKI_APP_SECRET` removed from `entrypointEnvVars`.**
+
+Cactus dropped app key/secret auth in v1.11.3 — DDS/DS now authenticate with the user's OAuth
+access token. The 0.0.5 chart removed the values, but the two names lingered in the default
+`entrypointEnvVars` list; they are now gone.
+
+No action is required: the substitution for them was already a no-op (nothing in the app reads
+them, so the placeholders are not present in the JS bundles). If you override `entrypointEnvVars`
+in a custom values file, you can drop `AUKI_APP_KEY` and `AUKI_APP_SECRET` from your list.
+
 ### Upgrading to 0.0.6
 
 **New environment variable: `EXPO_PUBLIC_RETAIL_OPS_CONFIG_URL`.**
@@ -86,7 +98,7 @@ stays on the production fallback.
 
 **app key and secret removed from values.**
 
-`EXPO_PUBLIC_AUKI_APP_KEY`, `EXPO_PUBLIC_AUKI_APP_SECRET` are no longer needed from Cactus v0.11.3.
+`EXPO_PUBLIC_AUKI_APP_KEY`, `EXPO_PUBLIC_AUKI_APP_SECRET` are no longer needed from Cactus v1.11.3.
 
 If you have been overriding these values, they are no longer recognized and should be removed from your custom values file.
 

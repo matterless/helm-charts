@@ -148,8 +148,6 @@ entrypointPrefixes:
 entrypointEnvVars:
   - API_URL
   - DDS_URL
-  - AUKI_APP_KEY
-  - AUKI_APP_SECRET
   - AUKI_API_PROJECT_ID
   - DS_URL
   - AMPLITUDE_PROD_API_KEY

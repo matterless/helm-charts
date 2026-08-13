@@ -1,0 +1,83 @@
+# Default values for store-analyzer.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: 992382468184.dkr.ecr.eu-central-1.amazonaws.com/store-analyzer
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 7777
+
+# A connection is served for its lifetime by the instance that accepted it, and
+# its working data is local to that pod. More than one replica needs sticky
+# routing.
+replicaCount: 1
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Working files, regenerated on demand. The root filesystem is read-only, so
+# this is the only writable path.
+sessionVolume:
+  mountPath: /app/sessions
+  sizeLimit: 1Gi
+
+useExistingSecret: false
+existingSecretName: ""
+secretData: {}
+secrets:
+  # store-analyzer:
+  #   as: environment
+  #   items:
+  #   - key: OPENAI_COMPATIBLE_API_KEY
+  #     envVarName: OPENAI_COMPATIBLE_API_KEY
+
+envVars:
+  AGENT_HOST: 0.0.0.0
+  AGENT_PORT: 7777
+  # Required, no defaults — see the README.
+  # CACTUS_API_BASE:
+  # LLM_PROVIDER:
+  # LLM_MODEL:
+  # OPENAI_COMPATIBLE_BASE_URL:

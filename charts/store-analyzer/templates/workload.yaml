@@ -1,0 +1,110 @@
+{{- $secrets := .Values.secrets }}
+{{- $fullName := include "store-analyzer.fullname" . }}
+{{- $secretName := .Values.existingSecretName }}
+{{- if or (eq .Values.useExistingSecret false) (empty .Values.existingSecretName) }}
+{{- $secretName = $fullName }}
+{{- end }}
+{{- $hasEnvFromSecret := false }}
+{{- range $secretKey, $secretConfig := $secrets }}
+  {{- if eq $secretConfig.as "envFrom" }}
+    {{- $hasEnvFromSecret = true }}
+  {{- end }}
+{{- end }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "store-analyzer.fullname" . }}
+  labels:
+    {{- include "store-analyzer.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "store-analyzer.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "store-analyzer.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "store-analyzer.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ include "store-analyzer.fullname" . }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default (print "v" .Chart.AppVersion) }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: session-volume
+              mountPath: {{ .Values.sessionVolume.mountPath }}
+          env:
+          {{- range $key, $value := .Values.envVars }}
+            {{- if and (ne (typeOf $value) "nil") (not (kindIs "invalid" $value)) (not (and (kindIs "string" $value) (eq (trim $value) ""))) }}
+            - name: {{ $key }}
+              value: {{ quote $value }}
+            {{- end }}
+          {{- end }}
+          {{- range $secretSource, $secretConfig := $secrets }}
+            {{- if eq $secretSource "store-analyzer" }}{{ $secretSource = $secretName }}{{- end }}
+            {{- if or (eq $secretConfig.as "environment") (eq $secretConfig.as "csi") }}
+              {{- range $item := $secretConfig.items }}
+            - name: {{ required "envVarName is required on secrets items when using environment or csi" $item.envVarName | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $secretSource }}
+                  key: {{ $item.key }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+          {{- if $hasEnvFromSecret }}
+          envFrom:
+            {{- range $secretName, $secretConfig := $secrets }}
+              {{- if eq $secretConfig.as "envFrom" }}
+            - secretRef:
+                name: {{ $secretName }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: session-volume
+          emptyDir:
+            sizeLimit: {{ .Values.sessionVolume.sizeLimit }}

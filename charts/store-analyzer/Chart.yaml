@@ -1,0 +1,6 @@
+apiVersion: v2
+name: store-analyzer
+description: The Cactus AI store-analysis agent.
+type: application
+version: 0.1.0
+appVersion: "0.1"

@@ -15,4 +15,4 @@ kubectl create secret \
 
 yq -i '.imagePullSecrets[0].name = "matterless-common-ecr-credentials"' "$(dirname "$0")/../values.yaml"
 yq -i '.image.repository = "'"$registry"'/internal-store-analyzer"' "$(dirname "$0")/../values.yaml"
-yq -i '.image.tag = "main"' "$(dirname "$0")/../values.yaml"
+yq -i '.image.tag = "latest"' "$(dirname "$0")/../values.yaml"

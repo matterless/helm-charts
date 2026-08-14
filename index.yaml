@@ -864,4 +864,17 @@ entries:
     urls:
     - https://github.com/matterless/helm-charts/releases/download/cactus-parser-0.0.1/cactus-parser-0.0.1.tgz
     version: 0.0.1
-generated: "2026-07-28T02:51:10.595390014Z"
+  store-analyzer:
+  - apiVersion: v2
+    appVersion: "0.1"
+    created: "2026-08-14T07:47:12.398108788Z"
+    description: The Cactus AI store-analysis agent.
+    digest: 3463b08bd08e1d18f15aedd852091848b2c7021df1ace65b552b38bf3928ad45
+    maintainers:
+    - name: ngsh
+    name: store-analyzer
+    type: application
+    urls:
+    - https://github.com/matterless/helm-charts/releases/download/store-analyzer-0.1.0/store-analyzer-0.1.0.tgz
+    version: 0.1.0
+generated: "2026-08-14T07:47:12.398162809Z"

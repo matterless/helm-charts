@@ -64,6 +64,8 @@ spec:
           volumeMounts:
             - name: session-volume
               mountPath: {{ .Values.sessionVolume.mountPath }}
+            - name: tmp
+              mountPath: /tmp
           env:
           {{- range $key, $value := .Values.envVars }}
             {{- if and (ne (typeOf $value) "nil") (not (kindIs "invalid" $value)) (not (and (kindIs "string" $value) (eq (trim $value) ""))) }}
@@ -108,3 +110,6 @@ spec:
         - name: session-volume
           emptyDir:
             sizeLimit: {{ .Values.sessionVolume.sizeLimit }}
+        - name: tmp
+          emptyDir:
+            sizeLimit: {{ .Values.tmpVolume.sizeLimit }}

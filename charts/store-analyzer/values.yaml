@@ -63,6 +63,11 @@ sessionVolume:
   mountPath: /app/sessions
   sizeLimit: 1Gi
 
+# The entrypoint opens an IPC socket under /tmp, which the read-only root
+# filesystem denies.
+tmpVolume:
+  sizeLimit: 64Mi
+
 useExistingSecret: false
 existingSecretName: ""
 secretData: {}

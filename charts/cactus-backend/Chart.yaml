@@ -2,7 +2,7 @@ apiVersion: v2
 name: cactus-backend
 description: A backend that exposes an API for the Cactus app to use.
 type: application
-version: 0.5.15
+version: 0.5.16
 appVersion: "0.2"
 maintainers:
   - name: dataviruset
@@ -25,11 +25,11 @@ dependencies:
   repository: https://juicedata.github.io/charts/
   condition: juicefs-s3-gateway.enabled
 - name: cactus-parser
-  version: 0.0.6
+  version: 0.0.8
   repository: https://charts.lookingglassprotocol.com
   condition: cactus-parser.enabled
 - name: store-analyzer
-  version: 0.1.0
+  version: 0.1.1
   repository: https://charts.lookingglassprotocol.com
   condition: store-analyzer.enabled
 - name: opentelemetry-collector

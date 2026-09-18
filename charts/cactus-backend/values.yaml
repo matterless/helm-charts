@@ -103,6 +103,7 @@ secretData:
   REDIS_PASSWORD: cactus-backend  # This is the password for the redis database. This should be a random string, it can be empty if you don't want to set up authentication for redis.
   AUTH_JWT_PROFILE: '{"type":"application","keyId":"123","key":"-----BEGIN RSA PRIVATE KEY-----\nexample\n-----END RSA PRIVATE KEY-----\n","appId":"456","clientId":"789"}'  # This is the JWT profile for the auth server (IdP).
   APP_SECRET: cactus-backend  # This is the app secret used together with the app key (defined in the envVars section below) to access Auki services. You should obtain it from the apps section of console.auki.network.
+  POLICY_TOKEN: ""  # The policy service token used for authorization checks. Get from Auki.
 secrets:
   cactus-backend:
     as: environment
@@ -115,6 +116,8 @@ secrets:
       envVarName: AUTH_JWT_PROFILE
     - key: APP_SECRET  # This is the app secret used together with the app key (defined in the envVars section below) to access Auki services. You should obtain it from the apps section of console.auki.network.
       envVarName: APP_SECRET
+    - key: POLICY_TOKEN  # The policy service token used for authorization checks.
+      envVarName: POLICY_TOKEN
     # - key: EVENTS_AUTH_KEY
     #   envVarName: EVENTS_AUTH_KEY
   # juicefs-secret:
@@ -331,6 +334,10 @@ envVars:
   S3_BUCKET_NAME: bucket-name  # The name of the S3 bucket. This cannot be empty when blob storage type is s3.
   S3_PATH_PREFIX: cactus-backend  # The path prefix for the S3 bucket. This cannot be empty when blob storage type is s3.
 
+  POLICY_ENABLED: true  # Whether to enable policy service authorization checks.
+  POLICY_BASE_URL: https://policy.auki.network  # The base URL of the policy service.
+  POLICY_SERVICE_CACHE_TTL_SECS: "1800"  # The TTL for the policy service cache in seconds.
+  POLICY_AUTHZ_CACHE_TTL_SECS: "30"  # The TTL for the policy authorization cache in seconds.
   TOKEN_CACHE_TTL: 600  # The TTL for the token cache in seconds. This is the time after which the auth token will be REVERIFIED by the backend. Set to zero to disable caching.
 
   PARSER_URL: http://cactus-backend-cactus-parser:8080  # The URL for the parser API, it should be Release.name-cactus-parser:8080.

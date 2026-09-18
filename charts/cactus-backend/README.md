@@ -148,6 +148,28 @@ Version 0.5.0 introduces significant changes to the feature set of the Cactus Ba
 * After you upgrade the application image to v0.2.10 or later, remove that key from `secretData`, from the `secrets.cactus-backend.items` list in your values, and from your existing Secret if you use `useExistingSecret` or `existingSecretName`.
 * If the application image is still older than v0.2.10, keep the key in your secret values until you upgrade the backend.
 
+### Upgrading to 0.5.16
+
+#### Security
+
+* Added `securityContext` to the cactus-backend container: `allowPrivilegeEscalation: false` and `seccompProfile: {type: RuntimeDefault}`. No action required unless you were overriding these values manually.
+
+#### Dependencies
+
+* Bumped subchart dependency versions to their latest minor/patch releases.
+
+### Upgrading to 0.5.17
+
+#### Features
+
+* Policy service integration is now supported.
+  * Set `POLICY_ENABLED`, `POLICY_BASE_URL`, `POLICY_SERVICE_CACHE_TTL_SECS`, and `POLICY_AUTHZ_CACHE_TTL_SECS` in `envVars` to configure the connection (`POLICY_ENABLED: 'true'` by default in this chart).
+  * Provide `POLICY_TOKEN` via `secretData.POLICY_TOKEN` (get from Auki). It will be mounted as a Kubernetes secret into the workload.
+
+#### Required actions
+
+* To enable policy authorization checks, set `secretData.POLICY_TOKEN` to the token obtained from Auki.
+
 ## Chart Structure
 
 - `Chart.yaml` - Chart metadata

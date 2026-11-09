@@ -65,6 +65,21 @@ Before upgrading, please review the following steps:
 4. **Backup:** If your deployment uses persistent data, ensure you have backups.
 5. **Test:** Consider upgrading in a staging environment before production.
 
+### Upgrading to 0.0.9
+
+Custom `entrypointEnvVars` lists containing `AUKI_APP_KEY`, `AUKI_APP_SECRET`, or
+their environment-suffixed variants now fail rendering. This prevents a stale
+override from reinserting a shared app credential into public JavaScript. Remove
+these entries and use a Cactus build with user OAuth authentication (v1.11.3 or
+later). The default list already excludes them.
+
+Also remove obsolete frontend credential fields from your build inputs and
+Secrets after checking their consumers. The chart cannot inspect the contents
+of an externally managed Secret or an existing image. Replace old serving pods
+and retire old public assets; changing chart values cannot erase previously
+served bundles or revoke issued tokens. Review legacy chart migrations before
+syncing an older deployment.
+
 ### Upgrading to 0.0.7
 
 **`AUKI_APP_KEY` / `AUKI_APP_SECRET` removed from `entrypointEnvVars`.**
@@ -73,8 +88,9 @@ Cactus dropped app key/secret auth in v1.11.3 — DDS/DS now authenticate with t
 access token. The 0.0.5 chart removed the values, but the two names lingered in the default
 `entrypointEnvVars` list; they are now gone.
 
-No action is required: the substitution for them was already a no-op (nothing in the app reads
-them, so the placeholders are not present in the JS bundles). If you override `entrypointEnvVars`
+For a current user-auth build the substitution is a no-op (nothing in that build reads
+them, so the placeholders are not present in its JS bundles). Older images can still contain
+the placeholders or credential values and must be replaced. If you override `entrypointEnvVars`
 in a custom values file, you can drop `AUKI_APP_KEY` and `AUKI_APP_SECRET` from your list.
 
 ### Upgrading to 0.0.6

@@ -1,3 +1,8 @@
+{{- range .Values.entrypointEnvVars }}
+{{- if regexMatch "^AUKI_APP_(KEY|SECRET)(_[A-Z0-9_]+)?$" . }}
+{{- fail "Cactus uses user authentication: remove AUKI_APP_KEY/AUKI_APP_SECRET (including environment variants) from entrypointEnvVars; shared app credentials must not be injected into public JavaScript." }}
+{{- end }}
+{{- end }}
 apiVersion: v1
 kind: ConfigMap
 metadata:

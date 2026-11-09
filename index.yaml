@@ -3,6 +3,18 @@ entries:
   cactus:
   - apiVersion: v2
     appVersion: "1"
+    created: "2026-11-09T06:57:28.912913382Z"
+    description: Cactus' web client that uses cactus-backend
+    digest: 1577e93989a24b47b3e3ad405163ab74fca6f9936d5af97c478983d5d07ecd00
+    maintainers:
+    - name: shuninghuang
+    name: cactus
+    type: application
+    urls:
+    - https://github.com/matterless/helm-charts/releases/download/cactus-0.0.9/cactus-0.0.9.tgz
+    version: 0.0.9
+  - apiVersion: v2
+    appVersion: "1"
     created: "2026-09-10T05:40:32.865893124Z"
     description: Cactus' web client that uses cactus-backend
     digest: 4b5d98520c081923b61420ad7ff69183e6fb21e83962d143716f33732f09baff
@@ -1100,4 +1112,4 @@ entries:
     urls:
     - https://github.com/matterless/helm-charts/releases/download/store-analyzer-0.1.0/store-analyzer-0.1.0.tgz
     version: 0.1.0
-generated: "2026-11-05T06:22:12.982806274Z"
+generated: "2026-11-09T06:57:28.912991418Z"

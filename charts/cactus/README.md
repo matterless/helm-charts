@@ -65,6 +65,20 @@ Before upgrading, please review the following steps:
 4. **Backup:** If your deployment uses persistent data, ensure you have backups.
 5. **Test:** Consider upgrading in a staging environment before production.
 
+### Upgrading to 0.0.10
+
+**New environment variable: `EXPO_PUBLIC_POLICY_URL`.**
+
+Cactus builds that call policy-system need the policy base URL substituted into
+the web bundle at container start. The chart defaults to production
+(`https://policy.auki.network`); override `envVars.EXPO_PUBLIC_POLICY_URL` for
+other environments. `POLICY_URL` is also registered in `entrypointEnvVars`.
+
+If you override `entrypointEnvVars` in a custom values file, re-list the full
+array and include `POLICY_URL` — Helm replaces lists rather than merging them.
+Without that entry the placeholder is never rewritten and the browser keeps
+`__EXPO_PUBLIC_POLICY_URL__`.
+
 ### Upgrading to 0.0.9
 
 Custom `entrypointEnvVars` lists containing `AUKI_APP_KEY`, `AUKI_APP_SECRET`, or

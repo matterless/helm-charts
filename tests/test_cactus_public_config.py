@@ -20,11 +20,15 @@ class CactusPublicConfigTests(unittest.TestCase):
         self.assertNotIn("AUKI_APP_KEY", result.stdout)
         self.assertNotIn("AUKI_APP_SECRET", result.stdout)
         self.assertIn("AUKI_API_PROJECT_ID", result.stdout)
+        self.assertIn("POLICY_URL", result.stdout)
+        self.assertIn("EXPO_PUBLIC_POLICY_URL", result.stdout)
 
     def test_custom_public_endpoint_configuration_still_renders(self):
         result = self.render("--set", "entrypointEnvVars={API_URL,DDS_URL,AUKI_API_PROJECT_ID}")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("AUKI_API_PROJECT_ID", result.stdout)
+        # Default envVars still ship the policy URL even when entrypointEnvVars is overridden.
+        self.assertIn("EXPO_PUBLIC_POLICY_URL", result.stdout)
 
     def test_legacy_credential_overrides_are_rejected(self):
         for name in ("AUKI_APP_KEY", "AUKI_APP_SECRET", "AUKI_APP_KEY_DEV", "AUKI_APP_SECRET_STAGING"):

@@ -48,14 +48,8 @@ jobs:
         id: list-changed
         run: |
           changed="$(ct list-changed --target-branch ${{ github.event.repository.default_branch }})"
-          echo "$changed"
           if [[ -n "$changed" ]]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
-            {
-              echo "charts<<EOF"
-              echo "$changed"
-              echo "EOF"
-            } >> "$GITHUB_OUTPUT"
           fi
 
       - name: Run chart-testing (lint)
@@ -76,10 +70,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.MATTERLESS_COMMON_AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.MATTERLESS_COMMON_AWS_REGION }}
 
-      # Pre-install scripts rewrite values.yaml (ECR pull secret, CI secrets). Running
-      # them for every chart dirties the worktree so a later `ct install` treats
-      # unrelated charts as changed and installs them. Only prepare changed charts,
-      # and pass those paths explicitly to `ct install --charts`.
       - name: Run pre-install scripts
         if: steps.list-changed.outputs.changed == 'true'
         env:
@@ -87,14 +77,10 @@ jobs:
           APP_SECRET: ${{ secrets.APP_SECRET }}
           APP_KEY: ${{ secrets.APP_KEY }}
         run: |
-          while IFS= read -r chart; do
-            [[ -z "$chart" ]] && continue
-            script="${chart}/scripts/pre-install.sh"
-            if [[ -f "$script" ]]; then
-              echo "--- Executing: $script ---"
-              bash "$script"
-            fi
-          done <<< "${{ steps.list-changed.outputs.charts }}"
+          find charts/*/scripts -name pre-install.sh -print0 | while IFS= read -r -d '' script; do
+            echo "--- Executing: $script ---"
+            "$script"
+          done
 
       - name: Run chart-testing (install)
         if: steps.list-changed.outputs.changed == 'true'
@@ -103,14 +89,4 @@ jobs:
           repos="$(yq '.dependencies[] | select(.repository != null) | "\(.name)=\(.repository)"' charts/*/Chart.yaml)"
           repo_args="$(echo "$repos" | sed '/^=$/d' | sort -t = -k 2 -u | awk '{printf "%s,", $0}' | sed 's/,$//')"
           test -n "$repo_args" && chart_repos="--chart-repos $repo_args" || chart_repos=""
-
-          charts_args=()
-          while IFS= read -r chart; do
-            [[ -z "$chart" ]] && continue
-            charts_args+=(--charts "$chart")
-          done <<< "${{ steps.list-changed.outputs.charts }}"
-
-          ct install \
-            --target-branch "${{ github.event.repository.default_branch }}" \
-            "${charts_args[@]}" \
-            $chart_repos
+          ct install --target-branch "${{ github.event.repository.default_branch }}" $chart_repos

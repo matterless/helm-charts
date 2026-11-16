@@ -1,0 +1,67 @@
+k8s-service:
+  containerImage:
+    repository: 992382468184.dkr.ecr.eu-central-1.amazonaws.com/cactus-public-api
+    tag: latest
+    pullPolicy: Always
+  applicationName: cactus-public-api
+  tolerations:
+    - key: "dedicated"
+      value: "armGroup"
+      effect: "NoSchedule"
+  containerPorts:
+    http:
+      port: 8080
+      protocol: TCP
+  service:
+    type: ClusterIP
+    ports:
+      app:
+        port: 80
+        protocol: TCP
+        targetPort: 8080
+  shutdownDelay: 5
+  replicaCount: 1
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: alb
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/target-type: ip
+      alb.ingress.kubernetes.io/group.name: default
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+      alb.ingress.kubernetes.io/actions.block: |
+        {"type":"fixed-response","fixedResponseConfig":{"contentType":"text/plain","statusCode":"404","messageBody":"Not Found"}}
+    path: /
+    pathType: Prefix
+    servicePort: app
+    additionalPathsHigherPriority:
+      - path: /swagger-ui
+        pathType: Prefix
+        serviceName: block
+        servicePort: use-annotation
+      - path: /api-docs
+        pathType: Prefix
+        serviceName: block
+        servicePort: use-annotation
+  containerResources:
+    limits:
+      memory: 512Mi
+    requests:
+      memory: 512Mi
+  secrets:
+    cactus-public-api:
+      as: envFrom
+  envVars:
+    ENABLE_SWAGGER: "false"
+    DOMAIN_RATE_LIMIT_RPM: "600"
+    DOMAIN_RATE_LIMIT_BURST: "120"
+    CONFIG_URL: https://config.lookingglassprotocol.com
+    CONFIG_CACHE_TTL: "60"
+    PUBLIC_DOMAINS: ""
+    AUTH_URL: https://auth.auki.network
+    # Config + cactus-backend Zitadel projects (M2M aud). Override per env if needed.
+    PROJECT_IDS: "342480985197117780,342481000464384340"
+    # CLIENT_ID_*/CLIENT_SECRET_* come from k8s secret
+    AUKI_API_URL: https://api.auki.network
+    AUKI_DDS_URL: https://dds.auki.network
+    AUKI_CLIENT_ID: cactus-public-api

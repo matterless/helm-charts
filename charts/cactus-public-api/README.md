@@ -30,7 +30,6 @@ Provide via Kubernetes secret / `envFrom` (names only — never commit values):
 | `CONFIG_URL` | `https://config.lookingglassprotocol.com` |
 | `PUBLIC_DOMAINS` | empty → use DDS domains as-is |
 | `PROJECT_IDS` | config + cactus-backend Zitadel project ids (CSV) |
-| `CONFIG_CACHE_TTL` | `60` (seconds) |
 
 Override image repository/tag and secrets for Auki or self-hosted deploys.
 

@@ -56,7 +56,8 @@ k8s-service:
     DOMAIN_RATE_LIMIT_RPM: "600"
     DOMAIN_RATE_LIMIT_BURST: "120"
     CONFIG_URL: https://config.lookingglassprotocol.com
-    PUBLIC_DOMAINS: ""
+    # JSON: { "<zorg_id>": ["<domain-id>", ...] }. "{}" = no domains.
+    PUBLIC_DOMAINS: "{}"
     AUTH_URL: https://auth.auki.network
     # Config + cactus-backend Zitadel projects (M2M aud). Override per env if needed.
     PROJECT_IDS: "342480985197117780,342481000464384340"

@@ -18,7 +18,7 @@ helm install cactus-public-api matterless/cactus-public-api -f my-values.yaml
 Provide via Kubernetes secret / `envFrom` (names only — never commit values):
 
 - `AUKI_APP_KEY` / `AUKI_APP_SECRET` (DDS)
-- Per-org M2M: `CLIENT_ID_<auki-org-uuid>` / `CLIENT_SECRET_<auki-org-uuid>`
+- Per-zorg M2M: `CLIENT_ID_<zitadel-org-id>` / `CLIENT_SECRET_<zitadel-org-id>`
 
 ## Key env defaults
 
@@ -28,7 +28,7 @@ Provide via Kubernetes secret / `envFrom` (names only — never commit values):
 | `AUKI_DDS_URL` | `https://dds.auki.network` |
 | `AUTH_URL` | `https://auth.auki.network` |
 | `CONFIG_URL` | `https://config.lookingglassprotocol.com` |
-| `PUBLIC_DOMAINS` | empty → use DDS domains as-is |
+| `PUBLIC_DOMAINS` | `{}` JSON `{ "zorg_id": ["domain-id", ...] }` (empty → no domains) |
 | `PROJECT_IDS` | config + cactus-backend Zitadel project ids (CSV) |
 
 Override image repository/tag and secrets for Auki or self-hosted deploys.

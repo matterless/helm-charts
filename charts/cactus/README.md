@@ -65,6 +65,24 @@ Before upgrading, please review the following steps:
 4. **Backup:** If your deployment uses persistent data, ensure you have backups.
 5. **Test:** Consider upgrading in a staging environment before production.
 
+### Upgrading to 0.0.11
+
+**New environment variable: `EXPO_PUBLIC_CONFIGURATION_URL`.**
+
+Staff builds resolve cactus-backend via authenticated `POST /cactus-backend` on the
+configuration service. The chart defaults to production
+(`https://config.lookingglassprotocol.com`); override
+`envVars.EXPO_PUBLIC_CONFIGURATION_URL` for other environments (for example
+`https://config.dev.lookingglassprotocol.com`). `CONFIGURATION_URL` is also
+registered in `entrypointEnvVars` so the value is substituted into the JS
+bundles at container start.
+
+If you override `entrypointEnvVars` in a custom values file, re-list the full
+array and include `CONFIGURATION_URL` — Helm replaces lists rather than merging
+them. Without that entry the placeholder is never rewritten and the browser
+keeps `__EXPO_PUBLIC_CONFIGURATION_URL__` (the app then falls back to the
+production configuration URL).
+
 ### Upgrading to 0.0.10
 
 **New environment variable: `EXPO_PUBLIC_POLICY_URL`.**

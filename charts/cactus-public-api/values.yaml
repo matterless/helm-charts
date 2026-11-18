@@ -59,7 +59,7 @@ k8s-service:
     # JSON: { "<zorg_id>": ["<domain-id>", ...] }. "{}" = no domains.
     PUBLIC_DOMAINS: "{}"
     AUTH_URL: https://auth.auki.network
-    # Config + cactus-backend Zitadel projects (M2M aud). Override per env if needed.
+    # Default / prod Zitadel projects (M2M aud). Staging: 342363160017109337,342363381845459615.
     PROJECT_IDS: "342480985197117780,342481000464384340"
     # CLIENT_ID_*/CLIENT_SECRET_* come from k8s secret
     AUKI_API_URL: https://api.auki.network

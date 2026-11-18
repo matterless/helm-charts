@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "cactus-public-api.fullname" . }}-test-connection"
+  labels:
+    {{- include "cactus-public-api.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: curl
+      image: curlimages/curl
+      command: ['curl']
+      args: ['-f', 'http://{{ index .Values "k8s-service" "applicationName" }}:{{ index .Values "k8s-service" "service" "ports" "app" "port" }}/ping']
+  restartPolicy: Never

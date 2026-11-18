@@ -37,7 +37,7 @@ jobs:
           check-latest: true
 
       - name: Check Cactus public configuration
-        run: python3 -m unittest discover -s tests -p 'test_cactus_public_config.py'
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
 
       - name: Set up chart-testing
         uses: helm/chart-testing-action@v2

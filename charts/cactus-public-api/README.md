@@ -6,6 +6,10 @@ Helm chart for deploying cactus-public-api (CPA / Gotu edge).
 Published to `https://charts.lookingglassprotocol.com`. Matterless env overlays live in
 `matterless/cactus-public-api` `helm/` (wrapper chart depending on this package).
 
+Chart defaults leave **`tolerations: []`** and **`ingress.annotations: {}`** empty — deployers
+(e.g. Matterless) set ALB annotations and node tolerations in their wrapper values. Pod/container
+securityContext defaults to a non-root read-only profile (`runAsUser` / `fsGroup` 1000).
+
 ## Installing
 
 ```console

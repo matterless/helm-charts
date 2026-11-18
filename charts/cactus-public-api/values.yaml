@@ -4,10 +4,8 @@ k8s-service:
     tag: latest
     pullPolicy: Always
   applicationName: cactus-public-api
-  tolerations:
-    - key: "dedicated"
-      value: "armGroup"
-      effect: "NoSchedule"
+  # Matterless (and other deployers) set node tolerations in their wrapper values.
+  tolerations: []
   containerPorts:
     http:
       port: 8080
@@ -21,28 +19,25 @@ k8s-service:
         targetPort: 8080
   shutdownDelay: 5
   replicaCount: 1
+  # Ingress hosts come from Argo; ALB annotations / paths are deployer-specific.
   ingress:
     enabled: true
-    annotations:
-      kubernetes.io/ingress.class: alb
-      alb.ingress.kubernetes.io/scheme: internet-facing
-      alb.ingress.kubernetes.io/target-type: ip
-      alb.ingress.kubernetes.io/group.name: default
-      alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
-      alb.ingress.kubernetes.io/actions.block: |
-        {"type":"fixed-response","fixedResponseConfig":{"contentType":"text/plain","statusCode":"404","messageBody":"Not Found"}}
+    annotations: {}
     path: /
     pathType: Prefix
     servicePort: app
-    additionalPathsHigherPriority:
-      - path: /swagger-ui
-        pathType: Prefix
-        serviceName: block
-        servicePort: use-annotation
-      - path: /api-docs
-        pathType: Prefix
-        serviceName: block
-        servicePort: use-annotation
+  podSecurityContext:
+    fsGroup: 1000
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
+    seccompProfile:
+      type: RuntimeDefault
   containerResources:
     limits:
       memory: 512Mi

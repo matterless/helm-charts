@@ -30,6 +30,7 @@ Provide via Kubernetes secret / `envFrom` (names only — never commit values):
 
 | Key | Default |
 |-----|---------|
+| `ENV` | `production` |
 | `AUKI_API_URL` | `https://api.auki.network` |
 | `AUKI_DDS_URL` | `https://dds.auki.network` |
 | `AUTH_URL` | `https://auth.auki.network` |

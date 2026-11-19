@@ -1,0 +1,9 @@
+name: cactus-public-api
+description: Gotu / CPA edge — public domains ∩ DDS, M2M, configuration one-row backend_url
+apiVersion: v2
+version: 0.0.2
+appVersion: "1.0"
+dependencies:
+- name: k8s-service
+  version: v0.2.29
+  repository: https://github.com/gruntwork-io/helm-kubernetes-services/releases/download/v0.2.29/

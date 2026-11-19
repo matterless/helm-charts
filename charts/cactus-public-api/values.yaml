@@ -1,0 +1,62 @@
+k8s-service:
+  containerImage:
+    repository: 992382468184.dkr.ecr.eu-central-1.amazonaws.com/cactus-public-api
+    tag: latest
+    pullPolicy: Always
+  applicationName: cactus-public-api
+  # Matterless (and other deployers) set node tolerations in their wrapper values.
+  tolerations: []
+  containerPorts:
+    http:
+      port: 8080
+      protocol: TCP
+  service:
+    type: ClusterIP
+    ports:
+      app:
+        port: 80
+        protocol: TCP
+        targetPort: 8080
+  shutdownDelay: 5
+  replicaCount: 1
+  # Ingress hosts come from Argo; ALB annotations / paths are deployer-specific.
+  ingress:
+    enabled: true
+    annotations: {}
+    path: /
+    pathType: Prefix
+    servicePort: app
+  podSecurityContext:
+    fsGroup: 1000
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
+    seccompProfile:
+      type: RuntimeDefault
+  containerResources:
+    limits:
+      memory: 512Mi
+    requests:
+      memory: 128Mi
+  secrets:
+    cactus-public-api:
+      as: envFrom
+  envVars:
+    ENV: production
+    ENABLE_SWAGGER: "false"
+    DOMAIN_RATE_LIMIT_RPM: "600"
+    DOMAIN_RATE_LIMIT_BURST: "120"
+    CONFIG_URL: https://config.lookingglassprotocol.com
+    # JSON: { "<zorg_id>": ["<domain-id>", ...] }. "{}" = no domains.
+    PUBLIC_DOMAINS: "{}"
+    AUTH_URL: https://auth.auki.network
+    PROJECT_IDS: "342480985197117780,342481000464384340"
+    # CLIENT_ID_*/CLIENT_SECRET_* come from k8s secret
+    AUKI_API_URL: https://api.auki.network
+    AUKI_DDS_URL: https://dds.auki.network
+    AUKI_CLIENT_ID: cactus-public-api

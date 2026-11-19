@@ -59,4 +59,3 @@ k8s-service:
     # CLIENT_ID_*/CLIENT_SECRET_* come from k8s secret
     AUKI_API_URL: https://api.auki.network
     AUKI_DDS_URL: https://dds.auki.network
-    AUKI_CLIENT_ID: cactus-public-api

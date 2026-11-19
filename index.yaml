@@ -1111,6 +1111,21 @@ entries:
     urls:
     - https://github.com/matterless/helm-charts/releases/download/cactus-parser-0.0.1/cactus-parser-0.0.1.tgz
     version: 0.0.1
+  cactus-public-api:
+  - apiVersion: v2
+    appVersion: "1.0"
+    created: "2026-11-19T03:27:56.901358815Z"
+    dependencies:
+    - name: k8s-service
+      repository: https://github.com/gruntwork-io/helm-kubernetes-services/releases/download/v0.2.29/
+      version: v0.2.29
+    description: Gotu / CPA edge — public domains ∩ DDS, M2M, configuration one-row
+      backend_url
+    digest: 118010d8dadaefd0ce9c9d6d13326709b19e7906ebf9671742494f4fcbe82881
+    name: cactus-public-api
+    urls:
+    - https://github.com/matterless/helm-charts/releases/download/cactus-public-api-0.0.2/cactus-public-api-0.0.2.tgz
+    version: 0.0.2
   store-analyzer:
   - apiVersion: v2
     appVersion: "0.1"
@@ -1136,4 +1151,4 @@ entries:
     urls:
     - https://github.com/matterless/helm-charts/releases/download/store-analyzer-0.1.0/store-analyzer-0.1.0.tgz
     version: 0.1.0
-generated: "2026-11-18T14:20:43.860205964Z"
+generated: "2026-11-19T03:27:56.901419526Z"

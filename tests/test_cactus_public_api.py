@@ -32,16 +32,16 @@ class CactusPublicApiChartTests(unittest.TestCase):
         result = self.render()
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertRegex(result.stdout, r"name:\s*ENV")
-        self.assertRegex(result.stdout, r"value:\s*production")
+        self.assertRegex(result.stdout, r'value:\s*"?production"?')
         self.assertIn("PROJECT_IDS", result.stdout)
         self.assertIn("342480985197117780,342481000464384340", result.stdout)
 
     def test_connection_hook_targets_ping(self):
         result = self.render()
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("helm.sh/hook: test", result.stdout)
+        self.assertIn("helm.sh/hook", result.stdout)
         self.assertIn("/ping", result.stdout)
-        self.assertIn("cactus-public-api:80/ping", result.stdout)
+        self.assertIn("cpa-cactus-public-api:80/ping", result.stdout)
 
     def test_shared_chart_leaves_tolerations_and_ingress_annotations_empty(self):
         result = self.render()

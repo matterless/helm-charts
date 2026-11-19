@@ -11,5 +11,5 @@ spec:
     - name: curl
       image: curlimages/curl
       command: ['curl']
-      args: ['-f', 'http://{{ index .Values "k8s-service" "applicationName" }}:{{ index .Values "k8s-service" "service" "ports" "app" "port" }}/ping']
+      args: ['-f', 'http://{{ .Release.Name }}-{{ index .Values "k8s-service" "applicationName" }}:{{ index .Values "k8s-service" "service" "ports" "app" "port" }}/ping']
   restartPolicy: Never
